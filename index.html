@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ylicen的博客</title>
+    <style>
+        /* 小清新风格基础样式 */
+        :root {
+            --primary-color: #a8e6cf;
+            --secondary-color: #dcedc1;
+            --accent-color: #ffd3b6;
+            --text-color: #555;
+            --light-text: #777;
+            --background-color: #f9f9f9;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        /* 导航栏样式 */
+        nav {
+            background-color: var(--primary-color);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        nav li {
+            margin: 0 1.5rem;
+        }
+        
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+        }
+        
+        nav a:hover, nav a.active {
+            color: #ff8b94;
+            border-bottom: 2px solid #ff8b94;
+        }
+        
+        /* 主要内容区 */
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* 文章列表区 */
+        .articles {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+        
+        .article {
+            border-bottom: 1px solid #eee;
+            padding: 1.5rem 0;
+            margin-bottom: 1.5rem;
+        }
+        
+        .article h3 {
+            color: #ff8b94;
+            margin-top: 0;
+        }
+        
+        .article-meta {
+            color: var(--light-text);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* 个人简介区 */
+        .profile {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .profile img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: #ff8b94;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html" class="active">首页</a></li>
+            <li><a href="notes.html">笔记</a></li>
+            <li><a href="thoughts.html">随想</a></li>
+            <li><a href="favorites.html">收藏</a></li>
+            <li><a href="about.html">关于</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <main class="articles">
+            <h2>最新文章</h2>
+            <div class="article">
+                <div class="article-header">
+                    <h3>春日小记</h3>
+                    <div class="article-meta">
+                        <span class="article-date">2025年4月10日</span>
+                        <span class="article-category">随想</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <p>四月的阳光温柔地洒在窗台上，我泡了一杯茉莉花茶，看着窗外新绿的树叶在微风中轻轻摇曳。这样的午后最适合阅读一本好书，或者写些文字记录心情。</p>
+                    <div class="divider">
+                        <svg viewBox="0 0 100 10" preserveAspectRatio="none">
+                            <path d="M0,5 Q25,0 50,5 T100,5" stroke="#a8e6cf" fill="none" stroke-width="1"/>
+                        </svg>
+                    </div>
+                    <p>最近迷上了养多肉植物，它们圆润可爱的形态总能让人心情愉悦。每天给它们浇水、观察生长变化，成了我生活中的小确幸。</p>
+                </div>
+            </div>
+            <div class="article">
+                <div class="article-header">
+                    <h3>CSS小技巧分享</h3>
+                    <div class="article-meta">
+                        <span class="article-date">2025年4月5日</span>
+                        <span class="article-category">笔记</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <p>今天想和大家分享几个实用的CSS小技巧：</p>
+                    <ul class="styled-list">
+                        <li>使用:empty伪类隐藏空元素，让界面更整洁</li>
+                        <li>object-fit属性可以轻松控制图片的填充方式</li>
+                        <li>用currentColor继承父元素颜色，减少重复定义</li>
+                    </ul>
+                    <p>这些小技巧都能让你的代码更简洁高效！</p>
+                </div>
+            </div>
+            <div class="article">
+                <div class="article-header">
+                    <h3>我的阅读清单</h3>
+                    <div class="article-meta">
+                        <span class="article-date">2025年3月28日</span>
+                        <span class="article-category">随想</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <p>分享最近在读的几本书：</p>
+                    <div class="book-list">
+                        <div class="book-item">
+                            <span class="book-icon">📖</span>
+                            <span>《瓦尔登湖》 - 感受自然的宁静与美好</span>
+                        </div>
+                        <div class="book-item">
+                            <span class="book-icon">📖</span>
+                            <span>《小王子》 - 每次重读都有新的感悟</span>
+                        </div>
+                        <div class="book-item">
+                            <span class="book-icon">📖</span>
+                            <span>《设计中的设计》 - 学习简约美学</span>
+                        </div>
+                    </div>
+                    <p>读书是心灵的旅行，期待与更多好书相遇。</p>
+                </div>
+            </div>
+        </main>
+        
+        <aside class="profile">
+            <img src="source/image/1.jpg" alt="Ylicen的头像">
+            <h2>Ylicen</h2>
+            <p>热爱生活与技术的00后，记录成长的点滴。</p>
+        </aside>
+    </div>
+    
+    <footer>
+        <p>© 2025 Ylicen的博客</p>
+        <div class="social-links">
+            <a href="https://github.com/Ylicen" target="_blank" title="GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+        </div>
+    </footer>
+</body>
+</html>

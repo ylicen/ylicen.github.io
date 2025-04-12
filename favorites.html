@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收藏 - Ylicen的博客</title>
+    <style>
+        /* 小清新风格基础样式 */
+        :root {
+            --primary-color: #a8e6cf;
+            --secondary-color: #dcedc1;
+            --accent-color: #ffd3b6;
+            --text-color: #555;
+            --light-text: #777;
+            --background-color: #f9f9f9;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        /* 导航栏样式 */
+        nav {
+            background-color: var(--primary-color);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        nav li {
+            margin: 0 1.5rem;
+        }
+        
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+        }
+        
+        nav a:hover {
+            color: #ff8b94;
+            border-bottom: 2px solid #ff8b94;
+        }
+        
+        /* 主要内容区 */
+        .favorites-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            color: #ff8b94;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .gallery-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .gallery-item-info {
+            padding: 1rem;
+        }
+        
+        .gallery-item-info h3 {
+            margin-top: 0;
+        }
+        
+        .music-list {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+        
+        .music-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .music-item:last-child {
+            border-bottom: none;
+        }
+        
+        .music-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            margin-right: 1rem;
+        }
+        
+        .music-info {
+            flex: 1;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: #ff8b94;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">首页</a></li>
+            <li><a href="#">笔记</a></li>
+            <li><a href="#">随想</a></li>
+            <li><a href="favorites.html">收藏</a></li>
+            <li><a href="about.html">关于</a></li>
+        </ul>
+    </nav>
+    
+    <div class="favorites-container">
+        <h2 class="section-title">精选图片</h2>
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176" alt="艺术设计" loading="lazy">
+                <div class="gallery-item-info">
+                    <h3>春日山野</h3>
+                    <p>拍摄于2025年3月，记录春天的气息</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae" alt="艺术装饰" loading="lazy">
+                <div class="gallery-item-info">
+                    <h3>湖畔晨曦</h3>
+                    <p>清晨湖面的第一缕阳光</p>
+                </div>
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1514327601312-3b9e0b56a6a3" alt="艺术风格" loading="lazy" style="object-position: center 30%;">
+                <div class="gallery-item-info">
+                    <h3>秋叶与萨蒂</h3>
+                    <p>灵感来自萨蒂的Gymnopédies</p>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">音乐推荐</h2>
+        <div class="music-list">
+            <div class="music-item">
+                <img src="https://i.scdn.co/image/ab67616d0000b2737a4781629469bb83356cd318" alt="专辑封面" loading="lazy">
+                <div class="music-info">
+                    <h3>德彪西 - 月光</h3>
+                    <p>印象派钢琴曲</p>
+                    <audio controls style="width: 100%; margin-top: 10px;">
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                        您的浏览器不支持音频元素
+                    </audio>
+                </div>
+            </div>
+            <div class="music-item">
+                <img src="https://i.scdn.co/image/ab67616d0000b2739c291af41cd1f4b3a1f5c5e7" alt="专辑封面" loading="lazy">
+                <div class="music-info">
+                    <h3>萨蒂 - 裸体歌舞</h3>
+                    <p>简约主义钢琴曲</p>
+                    <audio controls style="width: 100%; margin-top: 10px;">
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+                        您的浏览器不支持音频元素
+                    </audio>
+                </div>
+            </div>
+            <div class="music-item">
+                <img src="https://i.scdn.co/image/ab67616d0000b273d9194aa18fa4c9362b47464f" alt="专辑封面" loading="lazy">
+                <div class="music-info">
+                    <h3>拉威尔 - 波莱罗</h3>
+                    <p>印象派管弦乐</p>
+                    <audio controls style="width: 100%; margin-top: 10px;">
+                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" type="audio/mpeg">
+                        您的浏览器不支持音频元素
+                    </audio>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 Ylicen的博客</p>
+        <div class="social-links">
+            <a href="https://github.com/Ylicen" target="_blank" title="GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            </a>
+        </div>
+    </footer>
+</body>
+</html>

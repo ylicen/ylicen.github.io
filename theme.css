@@ -1,0 +1,896 @@
+/* 主题系统 - 为博客提供多种视觉风格体验 */
+
+/* 主题切换按钮样式 */
+.theme-switcher {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-radius: 30px;
+  padding: 0.3rem;
+  z-index: 1000;
+  display: flex;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.theme-switcher:hover {
+  background: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.theme-option {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: visible;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.theme-option:hover {
+  transform: translateY(-3px) scale(1.1);
+}
+
+.theme-option.active {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2), 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.theme-option span {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 6px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  font-weight: 400;
+}
+
+.theme-option:hover span {
+  opacity: 1;
+}
+
+/* 墨韵清风 - 新中式水墨风格 */
+.theme-option.ink-breeze {
+  background: linear-gradient(135deg, #f9f5f0, #e5e5e5);
+}
+
+.theme-option.ink-breeze::after {
+  content: "🖌️";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+}
+
+:root.theme-ink-breeze {
+  /* 基础色调 - 中国传统水墨画色系 */
+  --primary-color: #3a4a58;
+  --primary-light: #607d94;
+  --primary-dark: #1e2c38;
+  --secondary-color: #e9ecef;
+  --accent-color: #8c4c37;     /* 朱砂红 */
+  --accent-light: #a16359;
+  --text-color: #333333;
+  --light-text: #666666;
+  --background-color: #f9f5f0;
+  --hover-color: #d7d7d7;
+  --border-color: #e0e0e0;
+  
+  /* 水墨特有属性 */
+  --ink-light: rgba(240, 240, 240, 0.8);
+  --ink-medium: rgba(200, 200, 200, 0.3);
+  --ink-dark: rgba(41, 49, 51, 0.8);
+  --ink-accent: rgba(140, 76, 55, 0.7);
+  
+  /* 框架 */
+  --border-radius: 8px;
+  --transition-time: 0.3s;
+}
+
+.theme-ink-breeze body {
+  background-color: var(--background-color);
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 10 Q50 30 70 10 M10 50 Q30 70 50 50 Q70 30 90 50 M30 90 Q50 70 70 90' stroke='%233a4a58' stroke-width='0.8' stroke-opacity='0.07' fill='none'/%3E%3C/svg%3E");
+}
+
+.theme-ink-breeze .profile img {
+  border: 3px solid var(--ink-dark);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.theme-ink-breeze .article-header h3,
+.theme-ink-breeze .profile h2,
+.theme-ink-breeze .page-title {
+  color: var(--primary-color);
+}
+
+.theme-ink-breeze nav {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.theme-ink-breeze .articles,
+.theme-ink-breeze .profile {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(230, 230, 230, 0.5);
+}
+
+.theme-ink-breeze .article-link,
+.theme-ink-breeze nav a.active,
+.theme-ink-breeze nav a:hover {
+  color: var(--accent-color);
+}
+
+.theme-ink-breeze nav a::after,
+.theme-ink-breeze .divider {
+  background-color: var(--accent-color);
+}
+
+/* 霓虹夜曲 - 赛博朋克风格 */
+.theme-option.neon-nocturne {
+  background: linear-gradient(135deg, #0f1922, #2a044a);
+}
+
+.theme-option.neon-nocturne::after {
+  content: "✨";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+}
+
+:root.theme-neon-nocturne {
+  /* 基础色调 - 赛博朋克风格 */
+  --primary-color: #00f0ff;
+  --primary-light: #69feff;
+  --primary-dark: #00b8d4;
+  --secondary-color: #171923;
+  --accent-color: #fe00fe;     /* 霓虹粉 */
+  --accent-light: #ff67ff;
+  --text-color: #e0e0e0;
+  --light-text: #a0a0a0;
+  --background-color: #0f1922;
+  --hover-color: #252b36;
+  --border-color: #2d3748;
+  
+  /* 赛博朋克特有属性 */
+  --neon-glow: 0 0 10px;
+  --neon-glow-strong: 0 0 20px;
+  --neon-cyan: rgba(0, 240, 255, 0.7);
+  --neon-pink: rgba(254, 0, 254, 0.7);
+  --neon-purple: rgba(128, 0, 255, 0.7);
+  --grid-color: rgba(29, 92, 99, 0.15);
+  
+  /* 框架 */
+  --border-radius: 4px;
+  --transition-time: 0.3s;
+  
+  /* 收藏页等界面元素 */
+  --card-bg: rgba(15, 35, 50, 0.85);
+  --card-border: #1d2b3a;
+  --card-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  --input-bg: rgba(21, 32, 45, 0.9);
+  --input-border: #2a3b4d;
+  --input-text: #e0e0e0;
+  --input-focus: #00f0ff;
+  --button-bg: #1a2334;
+  --button-hover: #25374d;
+  --dialog-bg: rgba(17, 28, 40, 0.95);
+  --modal-overlay: rgba(0, 0, 0, 0.7);
+}
+
+.theme-neon-nocturne body {
+  background-color: var(--background-color);
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 L100 0 L100 100 L0 100 Z' stroke='%231d5c63' stroke-width='0.5' stroke-opacity='0.15' fill='none'/%3E%3Cpath d='M20 0 L20 100 M40 0 L40 100 M60 0 L60 100 M80 0 L80 100 M0 20 L100 20 M0 40 L100 40 M0 60 L100 60 M0 80 L100 80' stroke='%231d5c63' stroke-width='0.3' stroke-opacity='0.1' fill='none'/%3E%3C/svg%3E");
+  color: var(--text-color);
+}
+
+/* 霓虹夜曲主题下背景和页面部分 */
+.theme-neon-nocturne .container {
+  background-color: transparent;
+}
+
+.theme-neon-nocturne main {
+  background-color: transparent;
+}
+
+.theme-neon-nocturne p,
+.theme-neon-nocturne li,
+.theme-neon-nocturne span {
+  color: var(--text-color);
+}
+
+.theme-neon-nocturne a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.theme-neon-nocturne a:hover {
+  color: var(--primary-light);
+  text-shadow: var(--neon-glow) var(--neon-cyan);
+}
+
+.theme-neon-nocturne .page-title {
+  color: var(--primary-color);
+  text-shadow: var(--neon-glow) var(--neon-cyan);
+}
+
+/* 霓虹夜曲主题下的特殊组件样式 */
+.theme-neon-nocturne .intro-text {
+  color: var(--text-color);
+}
+
+.theme-neon-nocturne .tabs {
+  border-bottom-color: var(--card-border);
+}
+
+.theme-neon-nocturne .article {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+.theme-neon-nocturne .article-header h3 {
+  color: var(--primary-color);
+  text-shadow: var(--neon-glow) var(--neon-cyan);
+}
+
+.theme-neon-nocturne .article-meta {
+  color: var(--light-text);
+}
+
+.theme-neon-nocturne .article-category {
+  background-color: rgba(0, 240, 255, 0.1);
+  color: var(--primary-color);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.theme-neon-nocturne .book-item {
+  background-color: rgba(15, 35, 50, 0.5);
+  border-left: 3px solid var(--primary-color);
+}
+
+.theme-neon-nocturne .book-icon {
+  color: var(--primary-color);
+}
+
+/* 霓虹夜曲主题特有元素 */
+.theme-neon-nocturne .neon-highlight {
+  color: var(--accent-color);
+  text-shadow: var(--neon-glow) var(--neon-pink);
+}
+
+.theme-neon-nocturne .profile {
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-neon-nocturne .profile::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+  animation: neon-pulse 8s infinite linear;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes neon-pulse {
+  0% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
+
+.theme-neon-nocturne .profile img {
+  border: 3px solid var(--primary-color);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+.theme-neon-nocturne .article-header h3,
+.theme-neon-nocturne .profile h2,
+.theme-neon-nocturne .page-title {
+  color: var(--primary-color);
+  text-shadow: var(--neon-glow) var(--neon-cyan);
+}
+
+.theme-neon-nocturne nav {
+  background-color: rgba(23, 25, 35, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--primary-color);
+  box-shadow: 0 4px 20px rgba(0, 240, 255, 0.1);
+}
+
+.theme-neon-nocturne .articles,
+.theme-neon-nocturne .profile {
+  background-color: rgba(23, 25, 35, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.theme-neon-nocturne .article-link,
+.theme-neon-nocturne nav a.active,
+.theme-neon-nocturne nav a:hover {
+  color: var(--accent-color);
+  text-shadow: var(--neon-glow) var(--neon-pink);
+}
+
+.theme-neon-nocturne nav a::after {
+  background-color: var(--accent-color);
+  box-shadow: var(--neon-glow) var(--neon-pink);
+}
+
+.theme-neon-nocturne .divider {
+  background-color: var(--accent-color);
+  box-shadow: var(--neon-glow) var(--neon-pink);
+  opacity: 0.3;
+}
+
+.theme-neon-nocturne footer {
+  background-color: rgba(15, 25, 34, 0.9);
+  border-top: 1px solid var(--border-color);
+}
+
+/* 霓虹夜曲主题下收藏页面和各功能页面元素样式 */
+.theme-neon-nocturne .favorite-item,
+.theme-neon-nocturne .app-container,
+.theme-neon-nocturne .input-container,
+.theme-neon-nocturne .generation-container,
+.theme-neon-nocturne .result-container,
+.theme-neon-nocturne .status-container,
+.theme-neon-nocturne .gif-maker-info,
+.theme-neon-nocturne .tag-filter button,
+.theme-neon-nocturne .gallery-item,
+.theme-neon-nocturne .music-list,
+.theme-neon-nocturne .music-item,
+.theme-neon-nocturne .favorites-container,
+.theme-neon-nocturne .favorites-list {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+  box-shadow: var(--card-shadow);
+  color: var(--text-color);
+}
+
+.theme-neon-nocturne .favorite-item h3 a,
+.theme-neon-nocturne .gallery-item-info h3,
+.theme-neon-nocturne .music-info h3,
+.theme-neon-nocturne .gif-maker-info h3 {
+  color: var(--primary-color);
+  text-shadow: var(--neon-glow) var(--neon-cyan);
+}
+
+.theme-neon-nocturne input,
+.theme-neon-nocturne input[type="text"],
+.theme-neon-nocturne input[type="email"],
+.theme-neon-nocturne input[type="password"],
+.theme-neon-nocturne input[type="search"],
+.theme-neon-nocturne input[type="number"],
+.theme-neon-nocturne input[type="tel"],
+.theme-neon-nocturne input[type="url"],
+.theme-neon-nocturne input[type="date"],
+.theme-neon-nocturne input[type="datetime-local"],
+.theme-neon-nocturne input[type="month"],
+.theme-neon-nocturne input[type="week"],
+.theme-neon-nocturne input[type="time"],
+.theme-neon-nocturne textarea,
+.theme-neon-nocturne select {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border: 1px solid var(--input-border);
+  border-radius: var(--border-radius);
+}
+
+.theme-neon-nocturne input:focus,
+.theme-neon-nocturne input[type="text"]:focus,
+.theme-neon-nocturne input[type="email"]:focus,
+.theme-neon-nocturne input[type="password"]:focus,
+.theme-neon-nocturne input[type="search"]:focus,
+.theme-neon-nocturne input[type="number"]:focus,
+.theme-neon-nocturne input[type="tel"]:focus,
+.theme-neon-nocturne input[type="url"]:focus,
+.theme-neon-nocturne input[type="date"]:focus,
+.theme-neon-nocturne input[type="datetime-local"]:focus,
+.theme-neon-nocturne input[type="month"]:focus,
+.theme-neon-nocturne input[type="week"]:focus,
+.theme-neon-nocturne input[type="time"]:focus,
+.theme-neon-nocturne textarea:focus,
+.theme-neon-nocturne select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.2);
+}
+
+.theme-neon-nocturne ::placeholder {
+  color: rgba(224, 224, 224, 0.5);
+}
+
+/* 确保背景透明的输入框也能正确显示 */
+.theme-neon-nocturne .input-field input,
+.theme-neon-nocturne .input-container input {
+  background-color: var(--input-bg) !important;
+  color: var(--input-text) !important;
+}
+
+.theme-neon-nocturne .generate-button,
+.theme-neon-nocturne .tab-button,
+.theme-neon-nocturne .tag-filter button {
+  background-color: var(--button-bg);
+  color: var(--primary-color);
+  border: 1px solid var(--input-border);
+}
+
+.theme-neon-nocturne .generate-button:hover,
+.theme-neon-nocturne .tab-button:hover,
+.theme-neon-nocturne .tag-filter button:hover {
+  background-color: var(--button-hover);
+}
+
+.theme-neon-nocturne .tab-button.active {
+  background-color: var(--button-hover);
+  border-bottom-color: var(--primary-color);
+  box-shadow: 0 -4px 10px rgba(0, 240, 255, 0.1);
+}
+
+.theme-neon-nocturne .tag-filter button.active {
+  background-color: rgba(0, 240, 255, 0.15);
+  border-color: var(--primary-color);
+  color: var(--primary-light);
+}
+
+.theme-neon-nocturne .favorite-meta,
+.theme-neon-nocturne .favorite-source,
+.theme-neon-nocturne .favorite-tags span,
+.theme-neon-nocturne .gallery-item-info p,
+.theme-neon-nocturne .music-info p {
+  color: var(--light-text);
+}
+
+.theme-neon-nocturne .favorite-tags span {
+  background-color: rgba(0, 240, 255, 0.1);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.theme-neon-nocturne .status-display {
+  color: var(--primary-light);
+}
+
+.theme-neon-nocturne .frames-container img,
+.theme-neon-nocturne .result-container img {
+  border: 1px solid var(--card-border);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.theme-neon-nocturne #prompt-input {
+  color: var(--input-text);
+}
+
+.theme-neon-nocturne .input-icon {
+  color: var(--primary-color);
+}
+
+.theme-neon-nocturne .music-item {
+  border-bottom-color: rgba(45, 55, 72, 0.5);
+}
+
+.theme-neon-nocturne .favorites-container {
+  background-color: transparent;
+}
+
+.theme-neon-nocturne .gallery-item::before {
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+}
+
+.theme-neon-nocturne .music-list::before {
+  background: linear-gradient(180deg, var(--primary-color), var(--accent-color));
+}
+
+.theme-neon-nocturne .section-title::after {
+  background: var(--accent-color);
+  box-shadow: var(--neon-glow) var(--neon-pink);
+}
+
+.theme-neon-nocturne .section-title {
+  color: var(--primary-color);
+  text-shadow: var(--neon-glow) var(--neon-cyan);
+}
+
+.theme-neon-nocturne .favorite-item:hover,
+.theme-neon-nocturne .gallery-item:hover,
+.theme-neon-nocturne .music-item:hover {
+  background-color: rgba(25, 45, 60, 0.85);
+  box-shadow: 0 5px 20px rgba(0, 240, 255, 0.1);
+}
+
+.theme-neon-nocturne audio::-webkit-media-controls-panel {
+  background-color: rgba(15, 35, 50, 0.85);
+}
+
+.theme-neon-nocturne audio::-webkit-media-controls-play-button {
+  background-color: var(--primary-color);
+}
+
+/* 对deepseek和文生图页面的特殊样式 */
+.theme-neon-nocturne .chat-container,
+.theme-neon-nocturne .prompt-container,
+.theme-neon-nocturne .chat-message,
+.theme-neon-nocturne .user-input-container,
+.theme-neon-nocturne .image-generation-container,
+.theme-neon-nocturne .prompt-input,
+.theme-neon-nocturne .generate-options,
+.theme-neon-nocturne .image-results,
+.theme-neon-nocturne .history-panel,
+.theme-neon-nocturne .model-selection,
+.theme-neon-nocturne .parameters-panel,
+.theme-neon-nocturne .image-card {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+  color: var(--text-color);
+}
+
+.theme-neon-nocturne .user-message {
+  background-color: rgba(0, 240, 255, 0.1);
+  border-left: 3px solid var(--primary-color);
+}
+
+.theme-neon-nocturne .assistant-message {
+  background-color: rgba(254, 0, 254, 0.07);
+  border-left: 3px solid var(--accent-color);
+}
+
+.theme-neon-nocturne .image-card {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.theme-neon-nocturne .image-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 240, 255, 0.15);
+}
+
+.theme-neon-nocturne .history-item {
+  border-bottom: 1px solid var(--card-border);
+}
+
+.theme-neon-nocturne .history-item:hover {
+  background-color: rgba(0, 240, 255, 0.05);
+}
+
+.theme-neon-nocturne .history-item.active {
+  background-color: rgba(0, 240, 255, 0.1);
+  border-left: 3px solid var(--primary-color);
+}
+
+.theme-neon-nocturne select,
+.theme-neon-nocturne button {
+  background-color: var(--button-bg);
+  border-color: var(--input-border);
+  color: var(--text-color);
+}
+
+.theme-neon-nocturne select:focus,
+.theme-neon-nocturne button:hover {
+  border-color: var(--primary-color);
+  background-color: var(--button-hover);
+}
+
+.theme-neon-nocturne .parameter-label {
+  color: var(--primary-light);
+}
+
+/* 霓虹夜曲主题下的表格、滚动条和特殊组件 */
+.theme-neon-nocturne table {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-color);
+}
+
+.theme-neon-nocturne th {
+  background-color: rgba(0, 240, 255, 0.08);
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-dark);
+}
+
+.theme-neon-nocturne td {
+  border-bottom: 1px solid var(--card-border);
+}
+
+.theme-neon-nocturne tr:hover {
+  background-color: rgba(0, 240, 255, 0.05);
+}
+
+/* 自定义滚动条样式 */
+.theme-neon-nocturne ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.theme-neon-nocturne ::-webkit-scrollbar-track {
+  background: rgba(15, 25, 34, 0.8);
+}
+
+.theme-neon-nocturne ::-webkit-scrollbar-thumb {
+  background: var(--primary-dark);
+  border-radius: 4px;
+}
+
+.theme-neon-nocturne ::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+  box-shadow: 0 0 5px var(--neon-cyan);
+}
+
+/* 对话框和弹窗样式 */
+.theme-neon-nocturne .modal,
+.theme-neon-nocturne .dialog {
+  background-color: var(--dialog-bg);
+  border: 1px solid var(--primary-dark);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 240, 255, 0.1);
+  color: var(--text-color);
+}
+
+.theme-neon-nocturne .modal-header,
+.theme-neon-nocturne .dialog-header {
+  border-bottom: 1px solid var(--primary-dark);
+}
+
+.theme-neon-nocturne .modal-title,
+.theme-neon-nocturne .dialog-title {
+  color: var(--primary-color);
+  text-shadow: var(--neon-glow) var(--neon-cyan);
+}
+
+.theme-neon-nocturne .modal-footer,
+.theme-neon-nocturne .dialog-footer {
+  border-top: 1px solid var(--primary-dark);
+}
+
+.theme-neon-nocturne .close-button {
+  color: var(--primary-color);
+}
+
+.theme-neon-nocturne .close-button:hover {
+  color: var(--accent-color);
+  text-shadow: var(--neon-glow) var(--neon-pink);
+}
+
+/* 强调按钮和交互元素 */
+.theme-neon-nocturne .btn-primary {
+  background: linear-gradient(45deg, var(--primary-dark), var(--primary-color));
+  border: 1px solid var(--primary-color);
+  color: #111;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+}
+
+.theme-neon-nocturne .btn-primary:hover {
+  background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+.theme-neon-nocturne .btn-accent {
+  background: linear-gradient(45deg, #8800a8, var(--accent-color));
+  border: 1px solid var(--accent-color);
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(254, 0, 254, 0.2);
+}
+
+.theme-neon-nocturne .btn-accent:hover {
+  background: linear-gradient(45deg, var(--accent-color), var(--accent-light));
+  box-shadow: 0 0 15px rgba(254, 0, 254, 0.4);
+}
+
+/* 霓虹夜曲主题特有动画效果 */
+@keyframes neon-border-pulse {
+  0% {
+    box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan);
+  }
+  50% {
+    box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+  }
+  100% {
+    box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan);
+  }
+}
+
+.theme-neon-nocturne .neon-pulse-border {
+  animation: neon-border-pulse 2s infinite;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .theme-switcher {
+    top: 0.7rem;
+    right: 0.8rem;
+  }
+  
+  .theme-option {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .theme-option::after {
+    font-size: 14px;
+  }
+}
+
+/* 岁月流金 - 复古风格 */
+.theme-option.retro-gold {
+  background: linear-gradient(135deg, #f3e9c0, #dba858);
+}
+
+.theme-option.retro-gold::after {
+  content: "🕰️";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+}
+
+:root.theme-retro-gold {
+  /* 基础色调 - 复古风格 */
+  --primary-color: #8b5a2b;
+  --primary-light: #a67c52;
+  --primary-dark: #5e3c1c;
+  --secondary-color: #f3e9c0;
+  --accent-color: #aa3a1c;     /* 复古红 */
+  --accent-light: #c85a3a;
+  --text-color: #3c2f1c;
+  --light-text: #6b5b40;
+  --background-color: #f8f2dd;
+  --hover-color: #e8d9b0;
+  --border-color: #d4c28e;
+  
+  /* 复古特有属性 */
+  --vintage-shadow: rgba(139, 90, 43, 0.2);
+  --vintage-paper: #f5edd6;
+  --vintage-ink: #3c2f1c;
+  --vintage-accent: #aa3a1c;
+  --vintage-texture: rgba(210, 185, 130, 0.1);
+  
+  /* 框架 */
+  --border-radius: 6px;
+  --transition-time: 0.3s;
+}
+
+.theme-retro-gold body {
+  background-color: var(--background-color);
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 L10 0 L10 10 L0 10 Z M20 20 L30 20 L30 30 L20 30 Z M40 40 L50 40 L50 50 L40 50 Z M60 60 L70 60 L70 70 L60 70 Z M80 80 L90 80 L90 90 L80 90 Z' fill='%23d2b982' fill-opacity='0.1'/%3E%3C/svg%3E");
+}
+
+.theme-retro-gold .profile img {
+  border: 5px solid var(--vintage-paper);
+  box-shadow: 0 5px 15px var(--vintage-shadow);
+  filter: sepia(20%);
+}
+
+.theme-retro-gold .article-header h3,
+.theme-retro-gold .profile h2,
+.theme-retro-gold .page-title {
+  color: var(--primary-color);
+  font-family: 'Noto Serif SC', Georgia, serif;
+  font-weight: 600;
+}
+
+.theme-retro-gold nav {
+  background-color: var(--vintage-paper);
+  border-bottom: 2px solid var(--border-color);
+  box-shadow: 0 4px 8px var(--vintage-shadow);
+}
+
+.theme-retro-gold .articles,
+.theme-retro-gold .profile {
+  background-color: var(--vintage-paper);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 16px var(--vintage-shadow);
+}
+
+.theme-retro-gold .article-link,
+.theme-retro-gold nav a.active,
+.theme-retro-gold nav a:hover {
+  color: var(--accent-color);
+}
+
+.theme-retro-gold nav a::after {
+  background-color: var(--accent-color);
+}
+
+.theme-retro-gold .divider {
+  height: 2px;
+  background-color: var(--border-color);
+  opacity: 0.7;
+}
+
+.theme-retro-gold footer {
+  background-color: var(--vintage-paper);
+  border-top: 2px solid var(--border-color);
+}
+
+.theme-retro-gold .article,
+.theme-retro-gold .page-title {
+  border-bottom: 2px solid var(--border-color);
+}
+
+/* 霓虹夜曲主题下的各种输入控件强制覆盖样式 */
+.theme-neon-nocturne input:-webkit-autofill,
+.theme-neon-nocturne input:-webkit-autofill:hover,
+.theme-neon-nocturne input:-webkit-autofill:focus,
+.theme-neon-nocturne input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--input-text) !important;
+  -webkit-box-shadow: 0 0 0 30px var(--input-bg) inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* 对GIF制作器页面的特殊处理 */
+.theme-neon-nocturne .app-container input,
+.theme-neon-nocturne .generation-container input,
+.theme-neon-nocturne #prompt-input,
+.theme-neon-nocturne .prompt-input {
+  background-color: var(--input-bg) !important;
+  color: var(--input-text) !important;
+  border-color: var(--input-border) !important;
+}
+
+/* 对文生图页面的特殊处理 */
+.theme-neon-nocturne .image-generation-container input,
+.theme-neon-nocturne .image-generation-container textarea,
+.theme-neon-nocturne .prompt-container input,
+.theme-neon-nocturne .prompt-container textarea {
+  background-color: var(--input-bg) !important;
+  color: var(--input-text) !important;
+  border-color: var(--input-border) !important;
+}
+
+/* 对deepseek页面的特殊处理 */
+.theme-neon-nocturne .chat-container input,
+.theme-neon-nocturne .user-input-container input,
+.theme-neon-nocturne .user-input-container textarea {
+  background-color: var(--input-bg) !important;
+  color: var(--input-text) !important;
+  border-color: var(--input-border) !important;
+}
+
+/* 确保所有输入框都有正确的背景颜色 */
+.theme-neon-nocturne [type="text"],
+.theme-neon-nocturne [type="email"],
+.theme-neon-nocturne [type="password"],
+.theme-neon-nocturne [type="search"],
+.theme-neon-nocturne [type="number"],
+.theme-neon-nocturne [type="tel"],
+.theme-neon-nocturne [type="url"] {
+  background-color: var(--input-bg) !important;
+  color: var(--input-text) !important;
+} 

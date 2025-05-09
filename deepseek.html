@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="theme-mai-mai">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>麦麦Bot - 心理学助手</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="./deepseek.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">首页</a></li>
+      <li><a href="notes.html">笔记</a></li>
+      <li><a href="thoughts.html">随想</a></li>
+      <li><a href="favorites.html">收藏</a></li>
+      <li><a href="gif-maker.html">GIF制作器</a></li>
+      <li><a href="deepseek.html" class="active">麦麦Bot</a></li>
+      <li><a href="image.html">文生图</a></li>
+    </ul>
+  </nav>
+  
+  <div class="container" style="display: block; max-width: none; padding: 0 1rem;">
+    <main class="mai-container" style="width: 100%; max-width: 1200px; margin: 2rem auto;">
+      <section class="mai-section">
+        <div class="mai-header">
+          <img src="./source/image/2.jpg" alt="麦麦头像" class="mai-avatar">
+          <h2 class="page-title">麦麦Bot</h2>
+        </div>
+        <p class="intro-text">嗨～我是麦麦，有什么想聊的吗？</p>
+        
+        <div class="chat-app-container">
+          <div class="chat-container">
+            <div class="chat-actions">
+              <button id="new-chat-btn" class="action-btn" title="开始新对话">
+                <i class="fas fa-plus"></i> 新对话
+              </button>
+              <button id="clear-chat-btn" class="action-btn" title="清空聊天记录">
+                <i class="fas fa-trash-alt"></i> 清空
+              </button>
+            </div>
+            
+            <div class="chat-messages" id="chat-messages">
+              <div class="message ai-message">
+                <div class="mai-message-header">
+                  <img src="./source/image/2.jpg" alt="麦麦头像" class="mai-message-avatar">
+                  <span class="mai-name">麦麦</span>
+                </div>
+                你好呀～我是麦麦，平时喜欢刷贴吧和小红书。有什么想聊的吗？
+                <div class="message-controls">
+                  <button class="message-control-btn copy-btn" title="复制"><i class="fas fa-copy"></i></button>
+                </div>
+                <span class="message-time">刚刚</span>
+              </div>
+            </div>
+            
+            <div class="chat-input">
+              <textarea id="user-input" placeholder="和麦麦聊天..." rows="1"></textarea>
+              <button id="send-btn" class="send-btn" title="发送消息">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+              <div class="chat-status" id="chat-status"></div>
+            </div>
+            <div class="keyboard-hint">
+              <span>按 <kbd>Enter</kbd> 发送 · <kbd>Shift</kbd> + <kbd>Enter</kbd> 换行</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mai-info">
+          <h3>关于麦麦Bot</h3>
+          <p>我是一个心理学和脑科学专业的学生，曾经学习地质学，现在转行研究人类心智。我可以和你聊聊：</p>
+          <ul>
+            <li>心理学和脑科学知识</li>
+            <li>大学生活和学习经验</li>
+            <li>贴吧和小红书上的趣事</li>
+            <li>心理健康和情绪管理</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <p>© 2025 Ylicen的博客 | 麦麦Bot</p>
+  </footer>
+
+  <div id="toast" class="toast">提示信息</div>
+
+  <script src="deepseek.js"></script>
+  <script src="theme.js"></script>
+  
+  <script>
+    // 自动调整文本区域高度
+    const userInput = document.getElementById('user-input');
+    if (userInput) {
+      userInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+      });
+    }
+    
+    // 代码高亮
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightBlock(block);
+      });
+    });
+  </script>
+</body>
+</html>

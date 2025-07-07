@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}预定已确认{% endblock %}
+
+{% block content %}
+<div class="container mx-auto p-8 pt-24 text-center" data-aos="fade-up">
+    <div class="max-w-2xl mx-auto bg-white p-12 rounded-xl shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-teal-500 mx-auto mb-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h1 class="text-4xl font-playfair-display text-gray-800 mb-4">预定已确认!</h1>
+        <p class="text-gray-600 mb-8">谢谢您, {{ booking.name }}. 您的狂野冒险已安排妥当!</p>
+        
+        <div class="text-left bg-gray-50 p-6 rounded-lg border border-gray-200">
+            <h2 class="text-2xl font-bold font-inter text-teal-600 mb-4">您的预定码</h2>
+            <p class="text-4xl font-mono bg-gray-200 text-gray-800 p-4 rounded text-center tracking-widest mb-6">{{ booking.booking_code }}</p>
+            
+            <h3 class="text-xl font-bold mb-2">详情:</h3>
+            <p><strong>邮箱:</strong> {{ booking.email }}</p>
+            <p><strong>日期:</strong> {{ booking.booking_date.strftime('%Y年%m月%d日') }}</p>
+            <p><strong>总价:</strong> ¥{{ "%.2f"|format(booking.total_price * 7) }}</p>
+        </div>
+        
+        <p class="mt-8 text-sm text-gray-500">一封确认邮件已发送至 {{ booking.email }}. 请保管好您的预定码以便入园。</p>
+    </div>
+</div>
+{% endblock %}

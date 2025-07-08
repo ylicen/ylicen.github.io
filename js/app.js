@@ -33,6 +33,7 @@ function init() {
     renderTaskList();
     setupEventListeners();
     updateStatsDisplay();
+    registerServiceWorker();
 }
 
 // 加载本地数据
@@ -263,11 +264,9 @@ function applyTheme(theme) {
     });
 }
 
-// 初始化应用
-document.addEventListener('DOMContentLoaded', init);
 // 注册 Service Worker
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/service-worker.js')
             .then(registration => {
                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
@@ -275,5 +274,8 @@ if ('serviceWorker' in navigator) {
             .catch(error => {
                 console.log('ServiceWorker registration failed: ', error);
             });
-    });
+    }
 }
+
+// 初始化应用
+document.addEventListener('DOMContentLoaded', init);

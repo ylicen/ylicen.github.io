@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>番茄工作法统计</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="light-theme statistics-page">
+    <header>
+        <h1>番茄统计</h1>
+        <div class="theme-switcher">
+            <button class="theme-btn light">明亮</button>
+            <button class="theme-btn dark">暗黑</button>
+        </div>
+    </header>
+    
+    <main>
+        <div class="stats-container card">
+            <div class="stats-summary">
+                <div class="stat-card">
+                    <h3>今日完成</h3>
+                    <p id="today-count">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>本周完成</h3>
+                    <p id="week-count">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>总完成数</h3>
+                    <p id="total-count">0</p>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="productivity-chart"></canvas>
+            </div>
+            
+            <div class="export-controls">
+                <button id="export-data">导出数据</button>
+            </div>
+        </div>
+    </main>
+    
+    <nav class="bottom-nav">
+        <a href="index.html">计时器</a>
+        <a href="statistics.html" class="active">统计</a>
+    </nav>
+    
+    <script src="js/app.js"></script>
+</body>
+</html>

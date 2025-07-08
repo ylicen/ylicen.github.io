@@ -24,6 +24,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body, button, input, a {
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -113,30 +116,36 @@ main {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.timer-controls button {
+.btn {
     padding: 0.8rem 1.8rem;
-    margin: 0 0.8rem;
     border: none;
     border-radius: 30px;
-    background-color: var(--primary-color);
-    color: white;
     cursor: pointer;
     font-size: 1.1rem;
     font-weight: 600;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
 }
 
-.timer-controls button:hover:not(:disabled) {
+.btn-primary {
+    background-color: var(--primary-color);
+}
+
+.btn-primary:hover:not(:disabled) {
     background-color: var(--primary-light);
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-.timer-controls button:disabled {
+.btn:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
     box-shadow: none;
+}
+
+.timer-controls button {
+    margin: 0 0.8rem;
 }
 
 .settings h3, .task-container h2 {
@@ -196,7 +205,7 @@ main {
 }
 
 .task-input button:hover {
-    background-color: #00B8A9; /* A slightly darker teal */
+    filter: brightness(90%);
     transform: translateY(-2px);
 }
 
@@ -236,7 +245,7 @@ main {
 }
 
 #task-list li .delete-btn:hover {
-    background-color: #FF1744; /* Darker Red */
+    filter: brightness(90%);
 }
 
 .bottom-nav {
@@ -316,21 +325,12 @@ main {
     text-align: center;
 }
 
-.export-controls button {
-    padding: 0.8rem 1.8rem;
-    border: none;
-    border-radius: 30px;
+.btn-secondary {
     background-color: var(--secondary-color);
-    color: white;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.export-controls button:hover {
-    background-color: #00B8A9; /* A slightly darker teal */
+.btn-secondary:hover {
+    filter: brightness(90%);
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }

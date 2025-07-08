@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日记APP</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+        @layer base {
+            html {
+                font-family: 'Roboto', sans-serif;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                font-family: 'Playfair Display', serif;
+            }
+        }
+        @layer utilities {
+            .bg-gradient-to-br-custom {
+                background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+            }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5', // Indigo 600
+                        secondary: '#6366F1', // Indigo 500
+                        accent: '#EC4899', // Pink 500
+                        neutral: {
+                            50: '#F9FAFB',
+                            100: '#F3F4F6',
+                            200: '#E5E7EB',
+                            300: '#D1D5DB',
+                            400: '#9CA3AF',
+                            500: '#6B7280',
+                            600: '#4B5563',
+                            700: '#374151',
+                            800: '#1F2937',
+                            900: '#111827',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-blue-100 to-purple-100 min-h-screen flex flex-col">
+    <header class="bg-white shadow-md py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="images/logo.png" alt="日记APP Logo" class="h-8 w-8 mr-2">
+                <h1 class="text-2xl font-bold text-neutral-800">我的日记</h1>
+            </div>
+            <button class="bg-primary hover:bg-secondary active:bg-primary text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+                添加新日记
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <div id="diary-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 日记卡片将在这里动态加载 -->
+            <div class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
+                <h2 class="text-xl font-semibold text-neutral-800 mb-2">2024年7月9日 - 美好的一天</h2>
+                <p class="text-neutral-600 text-sm mb-4">今天天气晴朗，阳光明媚，我在公园散步，看到了很多可爱的狗狗...</p>
+                <div class="flex justify-end">
+                    <button class="text-primary hover:text-secondary text-sm font-medium transition duration-300 ease-in-out">查看详情</button>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-6 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
+                <h2 class="text-xl font-semibold text-neutral-800 mb-2">2024年7月8日 - 新项目的挑战</h2>
+                <p class="text-neutral-600 text-sm mb-4">新项目启动，面临一些技术挑战，但我相信团队的力量...</p>
+                <div class="flex justify-end">
+                    <button class="text-primary hover:text-secondary text-sm font-medium transition duration-300 ease-in-out">查看详情</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-neutral-800 text-white py-4 text-center">
+        <p>&copy; 2024 日记APP. All rights reserved.</p>
+    </footer>
+
+    <!-- 添加新日记模态框 -->
+    <div id="add-diary-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md transform transition-all duration-300 ease-out scale-95 opacity-0">
+            <h2 class="text-2xl font-bold text-neutral-800 mb-6">添加新日记</h2>
+            <form id="add-diary-form">
+                <div class="mb-4">
+                    <label for="diary-title" class="block text-neutral-700 text-sm font-bold mb-2">标题</label>
+                    <input type="text" id="diary-title" class="shadow appearance-none border rounded w-full py-2 px-3 text-neutral-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <div class="mb-6">
+                    <label for="diary-content" class="block text-neutral-700 text-sm font-bold mb-2">内容</label>
+                    <textarea id="diary-content" rows="6" class="shadow appearance-none border rounded w-full py-2 px-3 text-neutral-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
+                </div>
+                <div class="flex items-center justify-between">
+                    <button type="submit" class="bg-primary hover:bg-secondary text-white font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out">保存日记</button>
+                    <button type="button" id="close-modal-btn" class="bg-neutral-300 hover:bg-neutral-400 text-neutral-800 font-bold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const addDiaryBtn = document.querySelector('header button');
+        const addDiaryModal = document.getElementById('add-diary-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const addDiaryForm = document.getElementById('add-diary-form');
+        const diaryList = document.getElementById('diary-list');
+
+        let db; // IndexedDB 数据库实例
+        let diaries = []; // 用于存储从 IndexedDB 读取的日记
+
+        const DB_NAME = 'diaryAppDB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'diaries';
+
+        /**
+         * 初始化 IndexedDB 数据库
+         */
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                request.onerror = (event) => {
+                    console.error('IndexedDB 数据库打开失败:', event.target.errorCode);
+                    showToast('数据库打开失败！', 'error');
+                    reject('数据库打开失败');
+                };
+
+                request.onsuccess = (event) => {
+                    db = event.target.result;
+                    console.log('IndexedDB 数据库打开成功');
+                    resolve(db);
+                };
+
+                request.onupgradeneeded = (event) => {
+                    db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        const objectStore = db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+                        objectStore.createIndex('title', 'title', { unique: false });
+                        objectStore.createIndex('timestamp', 'timestamp', { unique: false });
+                        console.log('对象存储创建成功');
+                    }
+                };
+            });
+        }
+
+        /**
+         * 从 IndexedDB 获取所有日记
+         */
+        async function getDiariesFromDB() {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject('数据库未初始化');
+                    return;
+                }
+                const transaction = db.transaction([STORE_NAME], 'readonly');
+                const objectStore = transaction.objectStore(STORE_NAME);
+                const request = objectStore.getAll();
+
+                request.onerror = (event) => {
+                    console.error('获取日记失败:', event.target.errorCode);
+                    showToast('获取日记失败！', 'error');
+                    reject('获取日记失败');
+                };
+
+                request.onsuccess = (event) => {
+                    // 按时间戳降序排序
+                    const sortedDiaries = event.target.result.sort((a, b) => b.timestamp - a.timestamp);
+                    resolve(sortedDiaries);
+                };
+            });
+        }
+
+        /**
+         * 将日记保存到 IndexedDB
+         * @param {object} diary - 日记对象
+         */
+        async function saveDiaryToDB(diary) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject('数据库未初始化');
+                    return;
+                }
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const objectStore = transaction.objectStore(STORE_NAME);
+                const request = objectStore.add(diary);
+
+                request.onerror = (event) => {
+                    console.error('保存日记失败:', event.target.errorCode);
+                    showToast('保存日记失败！', 'error');
+                    reject('保存日记失败');
+                };
+
+                request.onsuccess = (event) => {
+                    console.log('日记保存成功:', event.target.result);
+                    resolve(event.target.result);
+                };
+            });
+        }
+
+        /**
+         * 从 IndexedDB 删除日记
+         * @param {number} id - 日记 ID
+         */
+        async function deleteDiaryFromDB(id) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject('数据库未初始化');
+                    return;
+                }
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const objectStore = transaction.objectStore(STORE_NAME);
+                const request = objectStore.delete(id);
+
+                request.onerror = (event) => {
+                    console.error('删除日记失败:', event.target.errorCode);
+                    showToast('删除日记失败！', 'error');
+                    reject('删除日记失败');
+                };
+
+                request.onsuccess = (event) => {
+                    console.log('日记删除成功:', id);
+                    resolve();
+                };
+            });
+        }
+
+        /**
+         * 渲染日记列表
+         */
+        async function renderDiaries() {
+            try {
+                diaries = await getDiariesFromDB(); // 从 IndexedDB 获取日记
+                const existingDiaryIds = Array.from(diaryList.children).map(card => parseInt(card.dataset.id));
+                const newDiaryIds = diaries.map(d => d.id);
+
+                // 移除不存在的日记卡片（带动画）
+                Array.from(diaryList.children).forEach(card => {
+                    const id = parseInt(card.dataset.id);
+                    if (!newDiaryIds.includes(id)) {
+                        card.classList.add('opacity-0', 'scale-95', 'pointer-events-none'); // 添加消失动画类
+                        card.style.height = card.offsetHeight + 'px'; // 固定高度，防止布局跳动
+                        card.style.marginBottom = '24px'; // 固定 margin-bottom
+                        setTimeout(() => {
+                            card.style.height = '0px';
+                            card.style.marginBottom = '0px';
+                            card.style.paddingTop = '0px';
+                            card.style.paddingBottom = '0px';
+                        }, 10); // 稍微延迟，确保高度设置生效
+                        card.addEventListener('transitionend', () => {
+                            card.remove();
+                        }, { once: true });
+                    }
+                });
+
+                // 添加或更新日记卡片
+                diaries.forEach(diary => {
+                    if (!existingDiaryIds.includes(diary.id)) {
+                        const diaryCard = document.createElement('div');
+                        diaryCard.dataset.id = diary.id; // 添加 data-id
+                        diaryCard.className = 'bg-white rounded-lg shadow-md p-6 transform transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg opacity-0 scale-95'; // 初始状态为隐藏和缩小
+                        diaryCard.innerHTML = `
+                            <h2 class="text-xl font-semibold text-neutral-800 mb-2">${diary.title}</h2>
+                            <p class="text-neutral-600 text-sm mb-4">${diary.content.substring(0, 100)}...</p>
+                            <div class="flex justify-end">
+                                <button data-id="${diary.id}" class="view-detail-btn text-primary hover:text-secondary text-sm font-medium transition duration-300 ease-in-out mr-4">查看详情</button>
+                                <button data-id="${diary.id}" class="delete-diary-btn text-red-500 hover:text-red-700 text-sm font-medium transition duration-300 ease-in-out">删除</button>
+                            </div>
+                        `;
+                        diaryList.appendChild(diaryCard);
+
+                        // 触发进入动画
+                        setTimeout(() => {
+                            diaryCard.classList.remove('opacity-0', 'scale-95');
+                            diaryCard.classList.add('opacity-100', 'scale-100');
+                        }, 50); // 稍微延迟，让 DOM 渲染完成
+                    }
+                });
+
+                // 重新绑定事件监听器，因为 DOM 元素可能已更新
+                attachEventListeners();
+            } catch (error) {
+                console.error('渲染日记失败:', error);
+            }
+        }
+
+        function attachEventListeners() {
+            document.querySelectorAll('.view-detail-btn').forEach(button => {
+                button.onclick = (e) => { // 使用 onclick 避免重复绑定
+                    const id = parseInt(e.target.dataset.id);
+                    const diary = diaries.find(d => d.id === id);
+                    if (diary) {
+                        alert(`标题: ${diary.title}\n\n内容:\n${diary.content}`);
+                    }
+                };
+            });
+
+            document.querySelectorAll('.delete-diary-btn').forEach(button => {
+                button.onclick = (e) => { // 使用 onclick 避免重复绑定
+                    const id = parseInt(e.target.dataset.id);
+                    deleteDiary(id);
+                };
+            });
+        }
+
+        function openModal() {
+            addDiaryModal.classList.remove('hidden');
+            setTimeout(() => {
+                addDiaryModal.querySelector('div').classList.remove('scale-95', 'opacity-0');
+                addDiaryModal.querySelector('div').classList.add('scale-100', 'opacity-100');
+            }, 10); // 小延迟以确保过渡效果
+        }
+
+        function closeModal() {
+            addDiaryModal.querySelector('div').classList.remove('scale-100', 'opacity-100');
+            addDiaryModal.querySelector('div').classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                addDiaryModal.classList.add('hidden');
+            }, 300); // 等待过渡完成
+        }
+
+        async function addDiary(title, content) {
+            const newDiary = {
+                title: title,
+                content: content,
+                timestamp: Date.now() // 添加时间戳
+            };
+            try {
+                await saveDiaryToDB(newDiary);
+                await renderDiaries(); // 重新渲染列表以显示新日记
+                closeModal();
+                showToast('日记添加成功！', 'success');
+            } catch (error) {
+                console.error('添加日记失败:', error);
+                showToast('日记添加失败！', 'error');
+            }
+        }
+
+        async function deleteDiary(id) {
+            try {
+                await deleteDiaryFromDB(id);
+                await renderDiaries(); // 重新渲染列表以移除已删除日记
+                showToast('日记删除成功！', 'success');
+            } catch (error) {
+                console.error('删除日记失败:', error);
+                showToast('日记删除失败！', 'error');
+            }
+        }
+
+        // Toast Notification
+        function showToast(message, type = 'info') {
+            let toastContainer = document.getElementById('toast-container');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.id = 'toast-container';
+                toastContainer.className = 'fixed bottom-4 right-4 z-50 flex flex-col space-y-2';
+                document.body.appendChild(toastContainer);
+            }
+
+            const toast = document.createElement('div');
+            toast.className = `p-4 rounded-lg shadow-lg text-white transform transition-all duration-300 ease-out opacity-0 translate-y-4`;
+
+            if (type === 'success') {
+                toast.classList.add('bg-green-500');
+            } else if (type === 'error') {
+                toast.classList.add('bg-red-500');
+            } else {
+                toast.classList.add('bg-gray-800');
+            }
+
+            toast.textContent = message;
+            toastContainer.appendChild(toast);
+
+            // 触发进入动画
+            setTimeout(() => {
+                toast.classList.remove('opacity-0', 'translate-y-4');
+                toast.classList.add('opacity-100', 'translate-y-0');
+            }, 10);
+
+            // 自动消失
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-4');
+                toast.addEventListener('transitionend', () => {
+                    toast.remove();
+                }, { once: true });
+            }, 3000);
+        }
+
+        // 事件监听
+        addDiaryBtn.addEventListener('click', openModal);
+        closeModalBtn.addEventListener('click', closeModal);
+        addDiaryForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('diary-title').value;
+            const content = document.getElementById('diary-content').value;
+            await addDiary(title, content);
+            addDiaryForm.reset();
+        });
+
+        // 页面加载时初始化数据库并渲染日记
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initDB();
+            await renderDiaries();
+        });
+    </script>
+</body>
+</html>

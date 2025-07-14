@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>便签 - 随身记录</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 主应用容器 -->
+    <div class="app" id="app">
+        
+        <!-- 主记录页面 -->
+        <div class="page page-write active" id="page-write">
+            <div class="write-container">
+                <div class="input-area glassmorphism">
+                    <textarea 
+                        id="note-input" 
+                        placeholder="记录此刻的想法..."
+                        spellcheck="false"
+                        autocomplete="off"
+                    ></textarea>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn-complete glassmorphism" id="btn-save">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    
+                    <button class="btn-history glassmorphism" id="btn-history">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M3 3v5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3.05 13a9 9 0 1 0 1.5-4.5h-1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 历史记录页面 -->
+        <div class="page page-history" id="page-history">
+            <div class="history-header">
+                <button class="btn-back glassmorphism" id="btn-back-to-write">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                
+                <h2>历史记录</h2>
+                
+                <button class="btn-settings glassmorphism" id="btn-settings">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 1v6m0 6v6" stroke="currentColor" stroke-width="2"/>
+                        <path d="m21 12-3-3m-3 3 3 3m-3-3h-3m3 0h3" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="search-container glassmorphism">
+                <input type="text" id="search-input" placeholder="搜索便签..." />
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                    <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2"/>
+                </svg>
+            </div>
+            
+            <div class="notes-list" id="notes-list">
+                <!-- 便签卡片将通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 设置页面 -->
+        <div class="page page-settings" id="page-settings">
+            <div class="settings-header">
+                <button class="btn-back glassmorphism" id="btn-back-to-history">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                
+                <h2>设置</h2>
+            </div>
+            
+            <div class="settings-list">
+                <div class="setting-item glassmorphism" id="font-size-setting">
+                    <span>字体大小</span>
+                    <select id="font-size-select">
+                        <option value="small">小</option>
+                        <option value="medium" selected>中</option>
+                        <option value="large">大</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item glassmorphism" id="export-setting">
+                    <span>导出便签</span>
+                    <button id="export-btn">导出</button>
+                </div>
+                
+                <div class="setting-item glassmorphism" id="clear-setting">
+                    <span>清空所有便签</span>
+                    <button id="clear-btn" class="danger">清空</button>
+                </div>
+                
+                <div class="setting-item glassmorphism about">
+                    <span>关于</span>
+                    <p>便签 v1.0 - 专注于记录的极简应用</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 确认对话框 -->
+    <div class="modal" id="confirm-modal">
+        <div class="modal-content glassmorphism">
+            <h3 id="modal-title">确认操作</h3>
+            <p id="modal-message">确定要执行此操作吗？</p>
+            <div class="modal-buttons">
+                <button id="modal-cancel" class="btn-secondary">取消</button>
+                <button id="modal-confirm" class="btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

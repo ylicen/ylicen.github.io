@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="theme-ink-breeze">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收藏 - Ylicen的博客</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // 导航栏active状态管理
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                const linkPage = link.getAttribute('href');
+                if (linkPage === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
+    <style>
+        /* 收藏页特定样式 */
+        .favorites-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            color: var(--primary-dark);
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2.5rem;
+            padding-bottom: 0.5rem;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40%;
+            height: 2px;
+            background: var(--accent-color);
+            opacity: 0.7;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .gallery-item {
+            background: var(--glass-bg);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.4s;
+            position: relative;
+        }
+        
+        .gallery-item::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+        }
+        
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-item-info {
+            padding: 1.5rem;
+        }
+        
+        .gallery-item-info h3 {
+            margin-top: 0;
+            color: var(--primary-dark);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .music-list {
+            background: var(--glass-bg);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            box-shadow: var(--glass-shadow);
+            position: relative;
+        }
+        
+        .music-list::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary-color), var(--accent-color));
+            opacity: 0.6;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+        }
+        
+        .music-item {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+        
+        .music-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .music-item:last-child {
+            border-bottom: none;
+        }
+        
+        .music-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--border-radius);
+            margin-right: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .music-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .music-info {
+            flex: 1;
+        }
+        
+        .music-info h3 {
+            color: var(--primary-dark);
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .music-info p {
+            color: var(--light-text);
+            margin-bottom: 0.8rem;
+        }
+        
+        audio {
+            margin-top: 0.5rem;
+            width: 100%;
+            height: 32px;
+        }
+        
+        audio::-webkit-media-controls-panel {
+            background-color: rgba(58, 95, 138, 0.1);
+        }
+        
+        audio::-webkit-media-controls-play-button {
+            background-color: var(--primary-color);
+            border-radius: 50%;
+        }
+    </style>
+  <script type="module" crossorigin src="/assets/favorites-XilxL_bX.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/main-Bt9nYmtW.js">
+  <link rel="modulepreload" crossorigin href="/assets/profile-component-CwmN1_oW.js">
+  <link rel="stylesheet" crossorigin href="/assets/main-B60PhlWt.css">
+  <script type="module">import.meta.url;import("_").catch(()=>1);(async function*(){})().next();window.__vite_is_modern_browser=true</script>
+  <script type="module">!function(){if(window.__vite_is_modern_browser)return;console.warn("vite: loading legacy chunks, syntax error above and the same error below should be ignored");var e=document.getElementById("vite-legacy-polyfill"),n=document.createElement("script");n.src=e.src,n.onload=function(){System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))},document.body.appendChild(n)}();</script>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    
+    <div class="container mx-auto px-4 py-8">
+        <main class="favorites-container bg-white rounded-xl shadow-lg p-6 md:p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-amber-100 rounded-full -translate-y-16 translate-x-16 opacity-20"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-amber-200 rounded-full translate-y-12 -translate-x-12 opacity-30"></div>
+            <h2 class="page-title text-2xl md:text-3xl font-bold mb-8 pb-2 border-b-2 border-amber-100 text-amber-800 relative z-10">我的收藏</h2>
+            
+            <div class="tag-filter flex flex-wrap gap-2 mb-8 justify-center">
+                <button data-tag="all" class="active px-4 py-2 bg-amber-100 text-amber-800 rounded-full hover:bg-amber-200 transition-colors duration-300">全部</button>
+                <button data-tag="article" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-amber-100 hover:text-amber-800 transition-colors duration-300">文章</button>
+                <button data-tag="book" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-amber-100 hover:text-amber-800 transition-colors duration-300">书籍</button>
+                <button data-tag="tool" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-amber-100 hover:text-amber-800 transition-colors duration-300">工具</button>
+                <button data-tag="website" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-amber-100 hover:text-amber-800 transition-colors duration-300">网站</button>
+                <button data-tag="video" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full hover:bg-amber-100 hover:text-amber-800 transition-colors duration-300">视频</button>
+            </div>
+            
+            <div class="favorites-list">
+                <!-- 文章 -->
+                <div class="favorite-item" data-tags="article frontend">
+                    <div class="favorite-icon">📄</div>
+                    <div class="favorite-content">
+                        <h3><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/" target="_blank" rel="noopener noreferrer">A Complete Guide to Flexbox</a></h3>
+                        <p>最全面的Flexbox布局指南，通过简洁的图解和示例讲解了Flexbox的各个属性和用法。</p>
+                        <div class="favorite-meta">
+                            <span class="favorite-source">CSS-Tricks</span>
+                            <div class="favorite-tags">
+                                <span>文章</span>
+                                <span>CSS</span>
+                                <span>布局</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="favorite-item flex bg-amber-50 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow duration-300 border border-amber-100" data-tags="article frontend">
+                    <div class="favorite-icon text-2xl mr-4">📄</div>
+                    <div class="favorite-content flex-1">
+                        <h3 class="text-xl font-semibold mb-2 text-amber-800"><a href="https://javascript.info/async-await" target="_blank" rel="noopener noreferrer" class="hover:text-amber-600 transition-colors duration-300">Async/await 详解</a></h3>
+                        <p class="text-gray-600 mb-4">深入浅出地解释了JavaScript中的async/await语法，包含了丰富的示例和常见场景解析。</p>
+                        <div class="favorite-meta flex justify-between items-center">
+                            <span class="favorite-source text-gray-500 text-sm">JavaScript.info</span>
+                            <div class="favorite-tags flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">文章</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">JavaScript</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">异步编程</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 书籍 -->
+                <div class="favorite-item flex bg-amber-50 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow duration-300 border border-amber-100" data-tags="book frontend">
+                    <div class="favorite-icon text-2xl mr-4">📚</div>
+                    <div class="favorite-content flex-1">
+                        <h3 class="text-xl font-semibold mb-2 text-amber-800">《深入理解ES6》</h3>
+                        <p class="text-gray-600 mb-4">Nicholas C. Zakas著。全面讲解ES6新特性，从变量声明到异步编程，让你全面掌握现代JavaScript。</p>
+                        <div class="favorite-meta flex justify-between items-center">
+                            <span class="favorite-source text-gray-500 text-sm">电子工业出版社</span>
+                            <div class="favorite-tags flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">书籍</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">JavaScript</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">ES6</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="favorite-item flex bg-amber-50 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow duration-300 border border-amber-100" data-tags="book design">
+                    <div class="favorite-icon text-2xl mr-4">📚</div>
+                    <div class="favorite-content flex-1">
+                        <h3 class="text-xl font-semibold mb-2 text-amber-800">《写给大家看的设计书》</h3>
+                        <p class="text-gray-600 mb-4">Robin Williams著。入门级设计指南，讲解了对比、重复、对齐、亲密性四大基本原则，适合所有想提升设计感的人阅读。</p>
+                        <div class="favorite-meta flex justify-between items-center">
+                            <span class="favorite-source text-gray-500 text-sm">人民邮电出版社</span>
+                            <div class="favorite-tags flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">书籍</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">设计</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">入门</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 工具 -->
+                <div class="favorite-item flex bg-amber-50 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow duration-300 border border-amber-100" data-tags="tool frontend">
+                    <div class="favorite-icon text-2xl mr-4">🔧</div>
+                    <div class="favorite-content flex-1">
+                        <h3 class="text-xl font-semibold mb-2 text-amber-800"><a href="https://vitejs.dev/" target="_blank" rel="noopener noreferrer" class="hover:text-amber-600 transition-colors duration-300">Vite</a></h3>
+                        <p class="text-gray-600 mb-4">下一代前端构建工具，显著提升了开发体验，拥有极速的热模块替换（HMR）和优化的构建过程。</p>
+                        <div class="favorite-meta flex justify-between items-center">
+                            <span class="favorite-source text-gray-500 text-sm">开源工具</span>
+                            <div class="favorite-tags flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">工具</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">前端构建</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">开发环境</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="favorite-item flex bg-amber-50 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow duration-300 border border-amber-100" data-tags="tool design">
+                    <div class="favorite-icon text-2xl mr-4">🔧</div>
+                    <div class="favorite-content flex-1">
+                        <h3 class="text-xl font-semibold mb-2 text-amber-800"><a href="https://www.figma.com/" target="_blank" rel="noopener noreferrer" class="hover:text-amber-600 transition-colors duration-300">Figma</a></h3>
+                        <p class="text-gray-600 mb-4">基于浏览器的协作设计工具，让设计、原型制作和交接变得无缝流畅。</p>
+                        <div class="favorite-meta flex justify-between items-center">
+                            <span class="favorite-source text-gray-500 text-sm">在线工具</span>
+                            <div class="favorite-tags flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">工具</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">设计</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">协作</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 网站 -->
+                <div class="favorite-item flex bg-amber-50 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow duration-300 border border-amber-100" data-tags="website learning">
+                    <div class="favorite-icon text-2xl mr-4">🌐</div>
+                    <div class="favorite-content flex-1">
+                        <h3 class="text-xl font-semibold mb-2 text-amber-800"><a href="https://roadmap.sh/" target="_blank" rel="noopener noreferrer" class="hover:text-amber-600 transition-colors duration-300">roadmap.sh</a></h3>
+                        <p class="text-gray-600 mb-4">为开发者提供各种技术路线图，帮助你规划学习路径，了解各个领域所需的技能和知识。</p>
+                        <div class="favorite-meta flex justify-between items-center">
+                            <span class="favorite-source text-gray-500 text-sm">学习资源</span>
+                            <div class="favorite-tags flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">网站</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">学习路径</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">技能树</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="favorite-item" data-tags="website frontend">
+                    <div class="favorite-icon">🌐</div>
+                    <div class="favorite-content">
+                        <h3><a href="https://codesandbox.io/" target="_blank" rel="noopener noreferrer">CodeSandbox</a></h3>
+                        <p>在线代码编辑器和原型工具，专为Web应用开发设计，支持npm依赖和各种模板。</p>
+                        <div class="favorite-meta">
+                            <span class="favorite-source">开发工具</span>
+                            <div class="favorite-tags">
+                                <span>网站</span>
+                                <span>在线编辑器</span>
+                                <span>原型开发</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 视频 -->
+                <div class="favorite-item flex bg-amber-50 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow duration-300 border border-amber-100" data-tags="video frontend">
+                    <div class="favorite-icon text-2xl mr-4">🎬</div>
+                    <div class="favorite-content flex-1">
+                        <h3 class="text-xl font-semibold mb-2 text-amber-800"><a href="https://www.youtube.com/c/TheCodingTrain" target="_blank" rel="noopener noreferrer" class="hover:text-amber-600 transition-colors duration-300">The Coding Train</a></h3>
+                        <p class="text-gray-600 mb-4">Daniel Shiffman的编程教学频道，通过生动有趣的方式讲解复杂的编程概念和创意编码。</p>
+                        <div class="favorite-meta flex justify-between items-center">
+                            <span class="favorite-source text-gray-500 text-sm">YouTube</span>
+                            <div class="favorite-tags flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">视频</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">编程教学</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">创意编码</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="favorite-item flex bg-amber-50 rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow duration-300 border border-amber-100" data-tags="video design">
+                    <div class="favorite-icon text-2xl mr-4">🎬</div>
+                    <div class="favorite-content flex-1">
+                        <h3 class="text-xl font-semibold mb-2 text-amber-800"><a href="https://www.bilibili.com/video/BV1ux411N7TK" target="_blank" rel="noopener noreferrer" class="hover:text-amber-600 transition-colors duration-300">李永铨：设计的思想</a></h3>
+                        <p class="text-gray-600 mb-4">著名平面设计师李永铨分享他对设计思想和创作过程的见解，启发设计师从文化和思想层面理解设计。</p>
+                        <div class="favorite-meta flex justify-between items-center">
+                            <span class="favorite-source text-gray-500 text-sm">bilibili</span>
+                            <div class="favorite-tags flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">视频</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">设计思想</span>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs">创意分享</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <aside id="profile-container" class="profile sticky top-20"></aside>
+    </div>
+    
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // 添加标签筛选功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const tagButtons = document.querySelectorAll('.tag-filter button');
+            const favoriteItems = document.querySelectorAll('.favorite-item');
+            
+            tagButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tag = this.getAttribute('data-tag');
+                    
+                    // 处理按钮激活状态
+                    tagButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 显示/隐藏项目
+                    if (tag === 'all') {
+                        favoriteItems.forEach(item => item.style.display = 'flex');
+                    } else {
+                        favoriteItems.forEach(item => {
+                            if (item.getAttribute('data-tags').includes(tag)) {
+                                item.style.display = 'flex';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+  <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
+  <script nomodule crossorigin id="vite-legacy-polyfill" src="/assets/polyfills-legacy-Dqn0fKRy.js"></script>
+  <script nomodule crossorigin id="vite-legacy-entry" data-src="/assets/favorites-legacy-MOhnCtUm.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+</body>
+</html>

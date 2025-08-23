@@ -1,0 +1,1 @@
+document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll(".profile-card-reimagined").forEach(e=>{e.addEventListener("mousemove",t=>{const n=e.getBoundingClientRect(),o=t.clientX-n.left,s=t.clientY-n.top;e.style.setProperty("--x","".concat(o,"px")),e.style.setProperty("--y","".concat(s,"px"))})})});

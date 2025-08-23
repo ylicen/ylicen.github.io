@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="theme-ink-breeze">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>随想 - Ylicen的博客</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // 导航栏active状态管理
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                const linkPage = link.getAttribute('href');
+                if (linkPage === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
+    <style>
+        /* 随想页特定样式 */
+        .thought-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .thought-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .thought-card::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: -10px;
+            font-size: 8rem;
+            color: var(--primary-color);
+            opacity: 0.08;
+            font-family: "Times New Roman", serif;
+            line-height: 1;
+            z-index: -1;
+        }
+        
+        .thought-card h2 {
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+        
+        .thought-card .date {
+            display: inline-block;
+            color: var(--light-text);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .thought-card p {
+            margin-bottom: 1.5rem;
+            flex: 1;
+            line-height: 1.8;
+        }
+        
+        .thought-card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+    </style>
+  <script type="module" crossorigin src="/assets/thoughts-XilxL_bX.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/main-Bt9nYmtW.js">
+  <link rel="modulepreload" crossorigin href="/assets/profile-component-CwmN1_oW.js">
+  <link rel="stylesheet" crossorigin href="/assets/main-B60PhlWt.css">
+  <script type="module">import.meta.url;import("_").catch(()=>1);(async function*(){})().next();window.__vite_is_modern_browser=true</script>
+  <script type="module">!function(){if(window.__vite_is_modern_browser)return;console.warn("vite: loading legacy chunks, syntax error above and the same error below should be ignored");var e=document.getElementById("vite-legacy-polyfill"),n=document.createElement("script");n.src=e.src,n.onload=function(){System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))},document.body.appendChild(n)}();</script>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    
+    <div class="container mx-auto px-4 py-8">
+        <main class="articles bg-white rounded-xl shadow-lg p-6 md:p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-amber-100 rounded-full -translate-y-16 translate-x-16 opacity-20"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-amber-200 rounded-full translate-y-12 -translate-x-12 opacity-30"></div>
+            <h2 class="page-title text-2xl md:text-3xl font-bold mb-8 pb-2 border-b-2 border-amber-100 text-amber-800 relative z-10">随想录</h2>
+            <div class="article mb-8 pb-6 border-b border-gray-100 last:border-b-0 last:mb-0 last:pb-0">
+                <div class="article-header">
+                    <h3 class="text-xl font-semibold mb-2 text-amber-800">慢生活的意义</h3>
+                    <div class="article-meta flex gap-4 text-sm text-gray-500 mb-4">
+                        <span class="article-date flex items-center gap-1"><i class="far fa-calendar"></i> 2025年4月10日</span>
+                        <span class="article-category flex items-center gap-1"><i class="fas fa-tag"></i> 生活</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <p class="text-gray-700 mb-4">在这个快节奏的世界里，我们似乎一直在追赶什么，却忘了停下来欣赏沿途的风景。前几天，我尝试了一天不看手机，不刷社交媒体，只是简单地读一本纸质书，在公园散步，观察季节的变化。</p>
+                    <p class="text-gray-700 mb-4">当我们放慢脚步，才能真正感受到生活的细节——树叶的纹路，风的轻抚，陌生人脸上的微笑。这些细小的美好往往被我们忽略，却构成了生活最真实的部分。</p>
+                    <p class="text-gray-700 mb-4">慢生活不是懒惰，而是一种有意识的选择，是对时间的尊重，对自我的关照。它让我们有机会思考什么才是真正重要的，什么是可以放下的。</p>
+                    <p class="text-gray-700">也许我们不需要每天都那么匆忙，偶尔放慢脚步，让心灵有喘息的空间，生活会呈现出不一样的色彩。</p>
+                </div>
+            </div>
+            <div class="article mb-8 pb-6 border-b border-gray-100 last:border-b-0 last:mb-0 last:pb-0">
+                <div class="article-header">
+                    <h3 class="text-xl font-semibold mb-2 text-amber-800">关于创作的思考</h3>
+                    <div class="article-meta flex gap-4 text-sm text-gray-500 mb-4">
+                        <span class="article-date flex items-center gap-1"><i class="far fa-calendar"></i> 2025年3月25日</span>
+                        <span class="article-category flex items-center gap-1"><i class="fas fa-tag"></i> 创作</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <p class="text-gray-700 mb-4">最近在思考创作这件事。无论是写代码、写文章还是画画，创作都是将内心的想法具象化的过程。但为什么有时我们会遇到创作的瓶颈？为什么有些人似乎总能源源不断地产出作品，而有些人则在起步阶段就放弃了？</p>
+                    <p class="text-gray-700 mb-4">我认为，创作的核心在于连接。连接我们的经验与想象，连接已知与未知，连接问题与解决方案。当我们面对空白页时，最困难的不是没有想法，而是不知道如何从众多想法中选择一个并将其发展成完整的作品。</p>
+                    <p class="text-gray-700 mb-4">也许创作的秘诀在于：不要等待灵感，而是主动创造条件；不要追求完美，而是享受过程；不要害怕失败，而是从中学习。就像写代码一样，最重要的是先让它运行起来，然后再不断迭代优化。</p>
+                    <p class="text-gray-700">我想，真正的创作者不是因为拥有天赋而创作，而是因为坚持创作而逐渐显现出天赋。</p>
+                </div>
+            </div>
+            <div class="article mb-8 pb-6 border-b border-gray-100 last:border-b-0 last:mb-0 last:pb-0">
+                <div class="article-header">
+                    <h3 class="text-xl font-semibold mb-2 text-amber-800">数字时代的阅读</h3>
+                    <div class="article-meta flex gap-4 text-sm text-gray-500 mb-4">
+                        <span class="article-date flex items-center gap-1"><i class="far fa-calendar"></i> 2025年2月20日</span>
+                        <span class="article-category flex items-center gap-1"><i class="fas fa-tag"></i> 阅读</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <p class="text-gray-700 mb-4">电子书、有声书、碎片化阅读……数字时代给阅读带来了前所未有的便利，但同时也改变了我们的阅读方式。我们可能一天读完了十几篇文章，却记不住其中的内容；可能购买了数十本电子书，却很少真正读完一本。</p>
+                    <p class="text-gray-700 mb-4">深度阅读似乎正在成为一种稀缺的能力。那种沉浸在书中世界、与作者对话的体验，被无休止的滚动和浏览所取代。我们获取了更多的信息，却可能失去了思考的深度。</p>
+                    <p class="text-gray-700 mb-4">也许，我们需要重新审视自己的阅读习惯：是否能够在没有通知打扰的环境中专注阅读一个小时？是否愿意放慢速度，咀嚼文字背后的意义？是否有勇气放下手机，拿起一本实体书？</p>
+                    <p class="text-gray-700">在这个信息爆炸的时代，精读可能比泛读更重要，思考可能比收集更有价值。毕竟，阅读的终极目的不是积累知识，而是培养思考能力和审美情趣。</p>
+                </div>
+            </div>
+            <div class="article mb-8 pb-6 border-b border-gray-100 last:border-b-0 last:mb-0 last:pb-0">
+                <div class="article-header">
+                    <h3 class="text-xl font-semibold mb-2 text-amber-800">关于时间管理的反思</h3>
+                    <div class="article-meta flex gap-4 text-sm text-gray-500 mb-4">
+                        <span class="article-date flex items-center gap-1"><i class="far fa-calendar"></i> 2025年1月30日</span>
+                        <span class="article-category flex items-center gap-1"><i class="fas fa-tag"></i> 效率</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <p class="text-gray-700 mb-4">我曾经是时间管理工具的狂热爱好者，尝试过各种方法：番茄钟、GTD、子弹笔记……我以为通过这些工具和方法，我能够挤出更多的时间，提高效率，做更多的事情。</p>
+                    <p class="text-gray-700 mb-4">然而最近我开始反思：时间管理的目的到底是什么？是为了做更多的事，还是做更有意义的事？是为了追求效率，还是为了寻找平衡？</p>
+                    <p class="text-gray-700 mb-4">我发现，真正的时间管理不是填满每一分钟，而是为重要的事情预留空间；不是追求完美的计划，而是保持灵活的应变；不是控制时间，而是尊重它的流动。</p>
+                    <p class="text-gray-700">也许，比起管理时间，我们更需要管理注意力和精力；比起追求效率，我们更需要明确目标和价值观。毕竟，生活不是一场与时间的赛跑，而是一次与自己的对话。</p>
+                </div>
+            </div>
+        </main>
+        
+        <aside id="profile-container" class="profile sticky top-20"></aside>
+    </div>
+    
+    <div id="footer-placeholder"></div>
+     
+  <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
+  <script nomodule crossorigin id="vite-legacy-polyfill" src="/assets/polyfills-legacy-Dqn0fKRy.js"></script>
+  <script nomodule crossorigin id="vite-legacy-entry" data-src="/assets/thoughts-legacy-MOhnCtUm.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+</body>
+</html>

@@ -1,132 +1,76 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="theme-ink-breeze">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>便签 - 随身记录</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ylicen的博客</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/assets/main-XilxL_bX.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/main-Bt9nYmtW.js">
+  <link rel="modulepreload" crossorigin href="/assets/profile-component-CwmN1_oW.js">
+  <link rel="stylesheet" crossorigin href="/assets/main-B60PhlWt.css">
+  <script type="module">import.meta.url;import("_").catch(()=>1);(async function*(){})().next();window.__vite_is_modern_browser=true</script>
+  <script type="module">!function(){if(window.__vite_is_modern_browser)return;console.warn("vite: loading legacy chunks, syntax error above and the same error below should be ignored");var e=document.getElementById("vite-legacy-polyfill"),n=document.createElement("script");n.src=e.src,n.onload=function(){System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))},document.body.appendChild(n)}();</script>
 </head>
 <body>
-    <!-- 主应用容器 -->
-    <div class="app" id="app">
-        
-        <!-- 主记录页面 -->
-        <div class="page page-write active" id="page-write">
-            <div class="write-container">
-                <div class="input-area glassmorphism">
-                    <textarea 
-                        id="note-input" 
-                        placeholder="记录此刻的想法..."
-                        spellcheck="false"
-                        autocomplete="off"
-                    ></textarea>
+    <div id="navbar-placeholder"></div>
+    
+    <div class="container mx-auto px-4 py-8">
+        <main class="articles bg-white rounded-xl shadow-lg p-6 md:p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-amber-100 rounded-full -translate-y-16 translate-x-16 opacity-20"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-amber-200 rounded-full translate-y-12 -translate-x-12 opacity-30"></div>
+            <h2 class="page-title text-2xl md:text-3xl font-bold mb-6 pb-2 border-b-2 border-amber-100 flex items-center gap-2 relative z-10">一些有趣的信息<img alt="" src="data:image/webp;base64,UklGRs4FAABXRUJQVlA4WAoAAAAQAAAAOwAAOwAAQUxQSDYBAAABkGNb27Fn9/PGtjsnlc0B2OiSKpVtZwK2nd+2bduVbbzv/RRxrglExATQUr0ZlojqEhH3Q+KYnGAckfpL4hht14D83jJQPkscw30SR7g8Qwr7jpSnItVpQLp9DGRyAsniOpLlXSTrR0g2j3E0KCbrhzgqWd1DsriBZHoWSW8MSbRoSBVQmf+RAr8yDjk/kUCGB5CogJEiPyNZnGEgUakCkc9rJGXgzz2GId93HT9wlNazbQxDJodzLzGMcF6s/wZDZF9+jnFIuN5iHFKyfgKR0W4kEfkViHS3MpBI/gNExg+RRBcjRapAZHCPN5O2FmVUbuq1iBwkcv2GZPZqCYOYPF7y/DlDmL1cMu1RcvoHgP1HKSW3KsK86M/G8VpE7P8lcYLIbFLbbEqnlJIf2hMRWU/93ygJVlA4IHIEAACQEgCdASo8ADwAPm0wk0ckIqGhKBQNUIANiUAY7H0ZmhWHrj1ljpd9PXcko0nb+8rFgBpZcfHoYZ13p7/t+4b+tXWA9Ev9qj06/BFD4MJypoJDh6dwGm8E8BrXqNone5X1/JiWE84DiuOoC5PuSSoJobXrdewvU13wZjLY3b9KgwPpbBXoKxvnD5nX3amZ/NCCcFbupiP/YDH7DmkAAP32Uil3pzsNyRN9kH+SDO1RyYSs74YBrz9Ek/hWvLn/4o3/4LdWX6gcmmq3J4Wcvs8xxBWYqd2fTTDuWqbHiLJXiZK1dU2rfto+G37XfvOMaw7cOQpsW6Xik3DkhFordE5LBX3z7VSPGAMdFQPFkDf8mQeuXYP/VGG++vCO9fhjDqbHjBYwS+9nIxT4s7LVT0GDo3VP35BqZNJVv+lmRmwAiLwx24ezHWCscVxIo1Nam/B829d6fvFIF8KcpJCfwDUShHufsvjLkwTwH37sON5kkq27dM1keKqC9GE+8+oRbzOv01h2HawHH5XImLDI4Z+/+jNWdrNqvszOMQMNoxQIHbQ7ZiHy+DtSmzDhw0F4UR868mbvgwS/qgk8Si1NFCX5ImzIIyh761wjTaf/tmSrAw7gV0Rj6hQyKvhV4L8v/5X/gF7inz9KHfrvlQM6srxJbjuN1oGgolbriFO8JtWUoB/7hly8IZ+GEik1cWFFD+z91ZqFKTNutr8RGAQ+CJf0K/aSMYbQZYAP7CHHzbBvH2qAbEyW0h1K4+H33kMK4Y17DJd3TfoOVN+ePhuBVgkvVHMvs8vguHO/yFUCn0lNDaWUcr1hl7IKliMg6rNjWOEnz/98MASfHjabA2VS6cxC+j+pwrKsM1Zs25c43zJwKtFgR442NyFvMUiG+Yt+PX9d7SeCBYTpOqjs1KCy/PgPwJTxl63sB5//5tR+W0v1nhMKoDA1M8LDgk7PEnckz8n9a8Hm96e8IVf60da4EBJPFu1LuYKcmBJU9QkxLKVG2yTok0T0tDWeVlOaYIfpNTEsrEzwaB18sOmfbWrphEvKBHfBDnr/DW+S+0sdd42fn9/GKK2wm2S/Tbz26DWr0yJ/2lMewi/lLWZ1DugA2hRWTmKmuYLKT7Mi+Nos7hy7U75zhNYqp1WiSled+s8GQook4W735RclRg4GJhbDZr78shW1PSnqgFzOeSg+Kecs++vulLOD0cwkycjYDGpdNMpgZYZrwP1tVKOuwg5Cz0HnBDtvOhToxoo8vpd8vcYY42QoUzrmL8gLCO36UhN9n0o8AwJivJRzTn8t1kx9aHEB+ofgUALBq8Wbr/RFQXW/F6PN8Lwn8a+1JBxUn9kLbB26bcA29ufWCnhnVJRpfKj44v/wa+6TIMo0efOf1LBhBC9xnQx5kQXK4lZFM66q3esoTtILIkF1xRPW1w9f+y3Q+SmqvcHIv5HpyORrxe2RlhmiLZHBFt85L4UaYfGz1lvLtPs//yb++KnDV6yzdSZFYpJxMa3N3DR07/CD3g8ngAAA" class="w-8 h-8"></h2>
+            <div class="article mb-8 pb-6 border-b border-gray-100 last:border-b-0 last:mb-0 last:pb-0">
+                <div class="article-header">
+                    <h3 class="text-xl font-semibold mb-2 text-amber-800">freecode训练营</h3>
+                    <div class="article-meta flex gap-4 text-sm text-gray-500 mb-4">
+                        <span class="article-date flex items-center gap-1"><i class="far fa-calendar"></i> 2025年6月8日</span>
+                        <span class="article-category flex items-center gap-1"><i class="fas fa-tag"></i> 工具</span>
+                    </div>
                 </div>
-                
-                <div class="action-buttons">
-                    <button class="btn-complete glassmorphism" id="btn-save">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
+                <div class="article-content">
+                    <p class="mb-3 flex items-center gap-2"><img src="data:image/webp;base64,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" width="20" alt="" class="inline-block"> 欢迎来freecode免费进行课程学习</p>
+                    <p><a href="https://www.freecodecamp.org/chinese/" rel="noopener" target="_blank" class="text-amber-600 hover:text-amber-800 hover:underline transition-colors duration-300 inline-block">点我呵呵哒</a><img src="/assets/emoji_814371796731953192-jIiLZbNe.webp" alt="" class="mx-auto"></p>
+                </div>
+            </div>
+            <div class="article mb-8 pb-6 border-b border-gray-100 last:border-b-0 last:mb-0 last:pb-0">
+                <div class="article-header">
                     
-                    <button class="btn-history glassmorphism" id="btn-history">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M3 3v5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M3.05 13a9 9 0 1 0 1.5-4.5h-1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
+                </div>
+                <div class="article-content">
+                    <div class="divider h-px bg-gray-200 my-6"></div>
+                    <p></p>
                 </div>
             </div>
-        </div>
-
-        <!-- 历史记录页面 -->
-        <div class="page page-history" id="page-history">
-            <div class="history-header">
-                <button class="btn-back glassmorphism" id="btn-back-to-write">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                
-                <h2>历史记录</h2>
-                
-                <button class="btn-settings glassmorphism" id="btn-settings">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
-                        <path d="M12 1v6m0 6v6" stroke="currentColor" stroke-width="2"/>
-                        <path d="m21 12-3-3m-3 3 3 3m-3-3h-3m3 0h3" stroke="currentColor" stroke-width="2"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <div class="search-container glassmorphism">
-                <input type="text" id="search-input" placeholder="搜索便签..." />
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
-                    <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2"/>
-                </svg>
-            </div>
-            
-            <div class="notes-list" id="notes-list">
-                <!-- 便签卡片将通过JavaScript动态生成 -->
-            </div>
-        </div>
-
-        <!-- 设置页面 -->
-        <div class="page page-settings" id="page-settings">
-            <div class="settings-header">
-                <button class="btn-back glassmorphism" id="btn-back-to-history">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                
-                <h2>设置</h2>
-            </div>
-            
-            <div class="settings-list">
-                <div class="setting-item glassmorphism" id="font-size-setting">
-                    <span>字体大小</span>
-                    <select id="font-size-select">
-                        <option value="small">小</option>
-                        <option value="medium" selected>中</option>
-                        <option value="large">大</option>
-                    </select>
+            <div class="article mb-8 pb-6 border-b border-gray-100 last:border-b-0 last:mb-0 last:pb-0">
+                <div class="article-header">
+                    <h3 class="text-xl font-semibold mb-2 text-amber-800">没用的小寄巧 <img src="data:image/webp;base64,UklGRuwDAABXRUJQVlA4IOADAACQEQCdASo8ADwAPmkokkWkIqGY+q7YQAaEsYBlVgkkhlgWL38vkFcBMr38V5j6VbHv6B+fp6c6bv19/skFD+IlHsi+PA70c+DNBxIn/QrMdDQoO5hhWDt4ifzEGZ5/qAb+pihp9dHDIS+xxeJJwIyL8mJb5/RDhrc5F61nIJW7Kg3enHTojHNI7gKlPIkGScqc7anwAAD+xqQmKWkvuBm9onMEmNM0SuNEBiMyxItWtTFJSQjHoqzN7qx5giyTMnHD34MW4Se+9Rm6RlFooISAFlnNW8VpOWqrvVU7pHYf4S7L9DRE3phTTkg/6danQ0BJFFCtGBoWaTO5JkLg5VxNPsXJidcfnbYdNIvV1m3TB7pW5ofXwj41OD0N2XzdM1z31m5NA+n/ydGT1u4whQrzWK3yNjEgNlnemmMHjsAGXXtLUWToV6sWwtuu4YlpKJiKzJ2JEbBlWmWWhc+v0iSUiF6Rw6ez3VzJYk9R1hQR1l8VUMlpM16dCn+BZYTBU678r8aHsHyQ1dLM/uJsj8vq4Lgf6fxWOtrDAhYCfhQvlWrcMNYN6GtTLTaLidWdwPlvNnuB5oMeXun3dgJkdvgx78hOY2YjaP9+iN7iF09QH6MaGiYRcoRElwZ9zg9iso79vEA6Jm5/melyTP3amRvmcMFDXvmm6X9eV52UUFACQjlr85SqTSPl3Gm1NKFnG+LOhEct/hKUOdlwPTOrNCG8I3X+Tyq6FCCiVmf9TgdTPxHJWBllw8++/iO3xVlfuRioVqS5I/fQKAJSwsWcGqM0voYkdiKbFX2dNwxHt7NFySp74tdAP7B7PfT6fhf5KyAN79mIFLat4kKViOhcN+X+SN1nOS/qnaeghnkyRoHiYOJxLp1gcTlcAxZJMut5MhoJUGMCK+XHvfCEwlhz/daq188LIt2GZaubcDrBARznmvpVw6kx7+aL/5BdrirCEFK0pALze6D+q1VbphzTwAbnVnz8b+UnfADdbjDL2EMPRnGxVTVGhr/ekIW2D18R0hN0+6HsEqPk7LEEm7Pt4z5j3pfvbU9l/ELZX1IDkxPoBGVcbWznF7toN4EYZbLXLLJ4vhKC3iGW4SUbodKO+mbAEuGgjHXhAoNdmxySD1jm6uc+sdeVhgqEfw4i++u6cGUDAu9Svtp2Hp0bYELRnVIRlWVcmzR/OcLhcGjnKARKFo2ETBL26VTPCMRKCMMx3E5F5AYP//HBXy+vwFLnNPosAMwJe0kb83idrgt3NL7l4XOb46gUdUG/VF6s0SSyiUMXNnxkr04GsYLE1uhrE8nTJYknL8FbX0bJGiz6BKcAAA==" width="50" alt="" class="inline-block ml-2"></h3>
+                    <div class="article-meta flex gap-4 text-sm text-gray-500 mb-4">
+                        <span class="article-date flex items-center gap-1"><i class="far fa-calendar"></i> 2025年4月5日</span>
+                        <span class="article-category flex items-center gap-1"><i class="fas fa-tag"></i> 笔记</span>
+                    </div>
                 </div>
-                
-                <div class="setting-item glassmorphism" id="export-setting">
-                    <span>导出便签</span>
-                    <button id="export-btn">导出</button>
-                </div>
-                
-                <div class="setting-item glassmorphism" id="clear-setting">
-                    <span>清空所有便签</span>
-                    <button id="clear-btn" class="danger">清空</button>
-                </div>
-                
-                <div class="setting-item glassmorphism about">
-                    <span>关于</span>
-                    <p>便签 v1.0 - 专注于记录的极简应用</p>
+                <div class="article-content">
+                    <ul class="styled-list list-disc pl-5 space-y-2 mb-4">
+                        <li class="pl-2">多喝热水</li>
+                        <li class="pl-2">少喝凉水</li>
+                        <li class="pl-2">我不玩原神!</li>
+                    </ul>
+                    <p class="text-gray-700">这些小技巧都能让你的生活更简洁高效！</p>
                 </div>
             </div>
-        </div>
+            <div class="article">
+                <div class="article-header">
+        </main>
+        
+        <aside id="profile-container" class="profile sticky top-20"></aside>
     </div>
-
-    <!-- 确认对话框 -->
-    <div class="modal" id="confirm-modal">
-        <div class="modal-content glassmorphism">
-            <h3 id="modal-title">确认操作</h3>
-            <p id="modal-message">确定要执行此操作吗？</p>
-            <div class="modal-buttons">
-                <button id="modal-cancel" class="btn-secondary">取消</button>
-                <button id="modal-confirm" class="btn-primary">确认</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    
+    <div id="footer-placeholder"></div>
+  <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
+  <script nomodule crossorigin id="vite-legacy-polyfill" src="/assets/polyfills-legacy-Dqn0fKRy.js"></script>
+  <script nomodule crossorigin id="vite-legacy-entry" data-src="/assets/main-legacy-MOhnCtUm.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
 </body>
 </html>

@@ -1,0 +1,26 @@
+<!-- 通用窗口组件 -->
+<div class="window shadow-soft-win bg-white rounded-xl overflow-hidden">
+    <!-- 窗口头部 (Drag Handle - Windows Title Bar) -->
+    <div class="window-header h-10 flex justify-between items-center border-b border-gray-100 cursor-move bg-gray-50/50">
+        <h2 class="text-sm font-light text-gray-700 ml-3">
+            <i class="window-icon text-xs mr-2 text-gray-500"></i> <span class="window-title">窗口标题</span>
+        </h2>
+        <div class="flex h-full">
+            <button class="win-btn minimize-btn" title="最小化">
+                <i class="fas fa-window-minimize text-xs"></i>
+            </button>
+            <button class="win-btn resize-btn" title="调整大小">
+                <i class="far fa-square text-xs"></i>
+            </button>
+            <button class="win-btn close-btn" title="关闭">
+                <i class="fas fa-times text-sm"></i>
+            </button>
+        </div>
+    </div>
+    <!-- 窗口内容 -->
+    <div class="window-content-area h-[calc(100%-40px)]">
+        <!-- 窗口内容将在这里插入 -->
+    </div>
+    <!-- 调整大小句柄 -->
+    <div class="resizer"></div>
+</div>

@@ -6,22 +6,13 @@
     <title>添加好友 | Connect</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 
-           自定义字体设置 
-           使用系统字体栈，但通过CSS特性调整字间距和渲染方式，
-           以达到类似Helvetica或Akzidenz-Grotesk的冷静感。
-        */
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
         
-        /* 
-           噪点纹理层 
-           这是实现“粗粝感”的关键，通过SVG噪点叠加，
-           给平滑的数字屏幕带来一种类似纸张或石材的物理触感。
-        */
+        /* 噪点纹理 */
         .noise-overlay {
             position: fixed;
             top: 0;
@@ -34,10 +25,7 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* 
-           硬阴影效果 (Hard Shadow)
-           新粗野主义的标志，去除模糊，强调物体占据空间的体积感。
-        */
+        /* 硬阴影效果 */
         .brutal-shadow {
             box-shadow: 6px 6px 0px 0px #2A2A2A;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -60,10 +48,9 @@
 </head>
 <body class="bg-[#E6E4DD] text-[#2A2A2A] h-screen w-full flex flex-col items-center justify-center overflow-hidden relative selection:bg-[#8C7B6C] selection:text-white">
 
-    <!-- 噪点纹理层 -->
     <div class="noise-overlay"></div>
 
-    <!-- 装饰性网格线：营造结构感 -->
+    <!-- 背景网格 -->
     <div class="absolute top-0 left-0 w-full h-full pointer-events-none z-0 flex justify-between px-8 md:px-24">
         <div class="w-px h-full bg-[#2A2A2A] opacity-10"></div>
         <div class="w-px h-full bg-[#2A2A2A] opacity-10"></div>
@@ -73,25 +60,17 @@
         <div class="h-px w-full bg-[#2A2A2A] opacity-10"></div>
     </div>
 
-    <!-- 主体容器 -->
     <main class="relative z-10 max-w-2xl w-full px-6 md:px-0">
         
-        <!-- 顶部元数据：冷静的说明 -->
         <div class="flex justify-between items-end mb-8 opacity-60 font-mono text-xs tracking-widest uppercase">
             <span>Protocol: UIN_ADD</span>
-            <span>Loc: Tencent_Server</span>
+            <span id="device-tag">DETECTING...</span>
         </div>
 
-        <!-- 核心卡片 -->
         <div class="bg-[#F0EFEC] border border-[#2A2A2A] p-8 md:p-16 relative group">
-            
-            <!-- 左上角装饰块 -->
             <div class="absolute top-0 left-0 w-4 h-4 bg-[#2A2A2A]"></div>
             
-            <!-- 内容区域 -->
             <div class="flex flex-col gap-12">
-                
-                <!-- 标题区 -->
                 <div class="space-y-2">
                     <h2 class="text-xs font-bold tracking-[0.3em] text-[#8C7B6C] uppercase">Identity Node</h2>
                     <h1 class="text-5xl md:text-7xl font-bold tracking-tighter leading-none text-[#2A2A2A]">
@@ -99,27 +78,23 @@
                     </h1>
                 </div>
 
-                <!-- 分割线 -->
                 <div class="w-full h-px bg-[#2A2A2A] opacity-20 relative overflow-hidden">
                     <div class="absolute top-0 left-0 h-full bg-[#2A2A2A] line-expand"></div>
                 </div>
 
-                <!-- 描述文字 -->
                 <p class="text-sm md:text-base leading-relaxed text-[#555] max-w-md font-serif italic">
-                    "点击下方按钮，添加QQ好友。"
+                    "在广阔的数据荒原中，这是一个静默的坐标。点击下方，建立连接。"
                 </p>
 
-                <!-- 交互按钮 -->
                 <div class="pt-4">
-                    <a href="tencent://AddContact/?from=pc&uin=3853368788" 
-                       class="inline-block w-full md:w-auto bg-[#2A2A2A] text-[#E6E4DD] px-10 py-5 text-sm font-bold tracking-[0.2em] uppercase brutal-shadow border border-[#2A2A2A] hover:bg-[#8C7B6C] transition-colors duration-300">
+                    <!-- 注意：这里去掉了 href，交由 JS 处理 -->
+                    <a id="qq-btn" href="#" 
+                       class="inline-block w-full md:w-auto bg-[#2A2A2A] text-[#E6E4DD] px-10 py-5 text-sm font-bold tracking-[0.2em] uppercase brutal-shadow border border-[#2A2A2A] hover:bg-[#8C7B6C] transition-colors duration-300 text-center">
                         Initiate Connection
                     </a>
                 </div>
-
             </div>
 
-            <!-- 右下角装饰 -->
             <div class="absolute bottom-4 right-4 font-mono text-[10px] opacity-40">
                 REF: 001-A
             </div>
@@ -127,10 +102,31 @@
 
     </main>
 
-    <!-- 底部版权：像碑文一样微小 -->
     <footer class="absolute bottom-8 text-[10px] font-mono opacity-40 tracking-widest text-center w-full z-10">
         DESIGNED FOR SILENCE © 2024
     </footer>
 
+    <!-- 核心逻辑脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const qqNumber = "3853368788";
+            const btn = document.getElementById('qq-btn');
+            const deviceTag = document.getElementById('device-tag');
+            
+            // 检测是否为移动设备
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+            if (isMobile) {
+                // 移动端协议：使用 mqqwpa 唤起聊天/加好友界面
+                // 这种方式在大多数手机浏览器中兼容性最好
+                btn.href = `mqqwpa://im/chat?chat_type=wpa&uin=${qqNumber}&version=1&src_type=web&web_src=oicqzone.com`;
+                deviceTag.innerText = "Loc: Mobile_Node";
+            } else {
+                // PC端协议
+                btn.href = `tencent://AddContact/?from=pc&uin=${qqNumber}`;
+                deviceTag.innerText = "Loc: Desktop_Terminal";
+            }
+        });
+    </script>
 </body>
 </html>

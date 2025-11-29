@@ -72,7 +72,14 @@
         }
     </style>
 </head>
-<body class="bg-[#E6E4DD] text-[#2A2A2A] h-screen w-full flex flex-col items-center justify-center overflow-hidden relative selection:bg-[#8C7B6C] selection:text-white">
+<!-- 
+    修改说明：
+    1. min-h-screen: 保证最小高度占满屏幕
+    2. justify-start: 移动端默认顶对齐
+    3. pt-28: 移动端顶部留白，将内容提上来
+    4. md:justify-center md:pt-0: 桌面端恢复垂直居中，取消顶部留白
+-->
+<body class="bg-[#E6E4DD] text-[#2A2A2A] min-h-screen w-full flex flex-col items-center justify-start pt-28 md:justify-center md:pt-0 overflow-hidden relative selection:bg-[#8C7B6C] selection:text-white">
 
     <!-- 纹理层 -->
     <div class="noise-overlay"></div>
@@ -148,7 +155,6 @@
                 <div id="panel-wx" class="flex flex-col gap-12 absolute top-0 left-0 w-full transition-opacity duration-300 opacity-0 pointer-events-none z-0">
                     <div class="space-y-2">
                         <h2 class="text-xs font-bold tracking-[0.3em] text-[#8C7B6C] uppercase">Identity Node 02</h2>
-                        <!-- 视觉分段显示，更符合手机号阅读习惯 -->
                         <h1 onclick="copyText('19561900237')" class="text-5xl md:text-7xl font-bold tracking-tighter leading-none text-[#2A2A2A] cursor-pointer hover:text-[#8C7B6C] transition-colors duration-300">
                             195<span class="text-[#8C7B6C] mx-2">/</span>6190<br>0237
                         </h1>

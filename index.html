@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>添加好友 | Connect</title>
+    <title>添加好友 | Connect Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -12,7 +12,7 @@
             -moz-osx-font-smoothing: grayscale;
         }
         
-        /* 噪点纹理 */
+        /* 1. 噪点纹理 */
         .noise-overlay {
             position: fixed;
             top: 0;
@@ -25,18 +25,17 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* 硬阴影效果 */
+        /* 2. 硬阴影交互 */
         .brutal-shadow {
             box-shadow: 6px 6px 0px 0px #2A2A2A;
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-
         .brutal-shadow:active {
             box-shadow: 0px 0px 0px 0px #2A2A2A;
             transform: translate(6px, 6px);
         }
 
-        /* 装饰线条动画 */
+        /* 3. 装饰线条动画 */
         .line-expand {
             width: 0;
             transition: width 0.8s ease-out;
@@ -45,45 +44,45 @@
             width: 100%;
         }
 
-        /* 复制成功的提示动画 */
-        @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(10px); }
-            20% { opacity: 1; transform: translateY(0); }
-            80% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-10px); }
+        /* 4. 复制成功提示动画 */
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translate(-50%, 20px); }
+            20% { opacity: 1; transform: translate(-50%, 0); }
+            80% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -20px); }
         }
-        .toast-anim {
-            animation: fadeInOut 2s forwards;
+        .toast-active {
+            display: block !important;
+            animation: slideUpFade 2s forwards;
+        }
+
+        /* 5. 切换按钮的激活状态样式 */
+        .nav-btn-active {
+            background-color: #2A2A2A;
+            color: #E6E4DD;
+        }
+        .nav-btn-inactive {
+            background-color: transparent;
+            color: #2A2A2A;
+            opacity: 0.5;
+        }
+        .nav-btn-inactive:hover {
+            opacity: 1;
+            background-color: #E6E4DD;
         }
     </style>
 </head>
 <body class="bg-[#E6E4DD] text-[#2A2A2A] h-screen w-full flex flex-col items-center justify-center overflow-hidden relative selection:bg-[#8C7B6C] selection:text-white">
 
+    <!-- 纹理层 -->
     <div class="noise-overlay"></div>
 
-    <!-- 微信/QQ内置浏览器 引导遮罩 (默认隐藏) -->
-    <div id="wx-mask" class="hidden fixed inset-0 z-[100] bg-[#2A2A2A] text-[#E6E4DD] flex-col items-center justify-center p-8 text-center cursor-pointer" onclick="this.style.display='none'">
-        <div class="border border-[#E6E4DD] p-8 max-w-sm w-full relative">
-            <div class="absolute top-0 left-0 w-4 h-4 bg-[#E6E4DD]"></div>
-            <div class="absolute bottom-0 right-0 w-4 h-4 bg-[#E6E4DD]"></div>
-            <h3 class="text-xl font-bold tracking-[0.2em] uppercase mb-4">System Alert</h3>
-            <p class="font-mono text-xs leading-relaxed mb-6 opacity-80">
-                ENVIRONMENT RESTRICTED.<br>
-                PLEASE OPEN IN EXTERNAL BROWSER.
-            </p>
-            <div class="text-sm font-serif italic">
-                点击右上角 ··· 选择在浏览器打开
-            </div>
-            <div class="mt-8 text-[10px] font-mono opacity-50">TAP TO DISMISS</div>
-        </div>
-    </div>
-
     <!-- 复制成功提示 -->
-    <div id="toast" class="hidden fixed top-24 left-1/2 transform -translate-x-1/2 bg-[#2A2A2A] text-[#E6E4DD] px-6 py-3 text-xs font-mono tracking-widest z-[60]">
-        COPIED TO CLIPBOARD
+    <div id="toast" class="hidden fixed top-20 left-1/2 bg-[#2A2A2A] text-[#E6E4DD] px-6 py-3 text-xs font-mono tracking-widest border border-[#E6E4DD] z-[100]">
+        DATA COPIED // 已复制
     </div>
 
-    <!-- 背景网格 -->
+    <!-- 背景装饰网格 -->
     <div class="absolute top-0 left-0 w-full h-full pointer-events-none z-0 flex justify-between px-8 md:px-24">
         <div class="w-px h-full bg-[#2A2A2A] opacity-10"></div>
         <div class="w-px h-full bg-[#2A2A2A] opacity-10"></div>
@@ -93,41 +92,89 @@
         <div class="h-px w-full bg-[#2A2A2A] opacity-10"></div>
     </div>
 
+    <!-- 主体内容 -->
     <main class="relative z-10 max-w-2xl w-full px-6 md:px-0">
         
+        <!-- 顶部状态栏 -->
         <div class="flex justify-between items-end mb-8 opacity-60 font-mono text-xs tracking-widest uppercase">
-            <span>Protocol: UIN_ADD</span>
-            <span id="status-text">WAITING...</span>
+            <span id="protocol-text">Protocol: QQ_LINK</span>
+            <span>STATUS: ONLINE</span>
         </div>
 
-        <div class="bg-[#F0EFEC] border border-[#2A2A2A] p-8 md:p-16 relative group">
+        <!-- 核心卡片 -->
+        <div class="bg-[#F0EFEC] border border-[#2A2A2A] p-8 md:p-16 relative group transition-all duration-500">
+            <!-- 装饰方块 -->
             <div class="absolute top-0 left-0 w-4 h-4 bg-[#2A2A2A]"></div>
             
-            <div class="flex flex-col gap-12">
-                <div class="space-y-2 cursor-pointer" onclick="copyToClipboard('3853368788')">
-                    <h2 class="text-xs font-bold tracking-[0.3em] text-[#8C7B6C] uppercase">Identity Node</h2>
-                    <h1 class="text-5xl md:text-7xl font-bold tracking-tighter leading-none text-[#2A2A2A] hover:text-[#8C7B6C] transition-colors duration-300">
-                        3853<span class="text-[#8C7B6C]">.</span>36<br>8788
-                    </h1>
-                </div>
-
-                <div class="w-full h-px bg-[#2A2A2A] opacity-20 relative overflow-hidden">
-                    <div class="absolute top-0 left-0 h-full bg-[#2A2A2A] line-expand"></div>
-                </div>
-
-                <p class="text-sm md:text-base leading-relaxed text-[#555] max-w-md font-serif italic">
-                    "在广阔的数据荒原中，这是一个静默的坐标。点击下方，建立连接。"
-                </p>
-
-                <div class="pt-4">
-                    <button id="action-btn" class="w-full md:w-auto bg-[#2A2A2A] text-[#E6E4DD] px-10 py-5 text-sm font-bold tracking-[0.2em] uppercase brutal-shadow border border-[#2A2A2A] hover:bg-[#8C7B6C] transition-colors duration-300 text-center cursor-pointer">
-                        Initiate Connection
-                    </button>
-                </div>
+            <!-- 顶部导航开关 -->
+            <div class="flex border-b border-[#2A2A2A] border-opacity-20 mb-10 pb-4 gap-6">
+                <button onclick="switchTab('qq')" id="btn-qq" class="nav-btn-active px-4 py-1 text-xs font-bold tracking-widest uppercase border border-[#2A2A2A] transition-colors duration-300">
+                    QQ NODE
+                </button>
+                <button onclick="switchTab('wx')" id="btn-wx" class="nav-btn-inactive px-4 py-1 text-xs font-bold tracking-widest uppercase border border-[#2A2A2A] transition-colors duration-300">
+                    WECHAT / MOBILE
+                </button>
             </div>
 
+            <!-- 内容区域容器 -->
+            <div class="relative min-h-[300px]">
+                
+                <!-- QQ 页面 -->
+                <div id="panel-qq" class="flex flex-col gap-12 absolute top-0 left-0 w-full transition-opacity duration-300 opacity-100 z-10">
+                    <div class="space-y-2">
+                        <h2 class="text-xs font-bold tracking-[0.3em] text-[#8C7B6C] uppercase">Identity Node 01</h2>
+                        <h1 onclick="copyText('3853368788')" class="text-5xl md:text-7xl font-bold tracking-tighter leading-none text-[#2A2A2A] cursor-pointer hover:text-[#8C7B6C] transition-colors duration-300">
+                            3853<span class="text-[#8C7B6C]">.</span>36<br>8788
+                        </h1>
+                    </div>
+                    
+                    <div class="w-full h-px bg-[#2A2A2A] opacity-20 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 h-full bg-[#2A2A2A] line-expand"></div>
+                    </div>
+
+                    <p class="text-sm md:text-base leading-relaxed text-[#555] max-w-md font-serif italic">
+                        "点击下方按钮复制QQ号码。"
+                    </p>
+
+                    <div class="pt-4">
+                        <button onclick="copyText('3853368788')" 
+                                class="w-full md:w-auto bg-[#2A2A2A] text-[#E6E4DD] px-10 py-5 text-sm font-bold tracking-[0.2em] uppercase brutal-shadow border border-[#2A2A2A] hover:bg-[#8C7B6C] transition-colors duration-300 cursor-pointer">
+                            COPY QQ ID
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 微信/手机 页面 (默认隐藏) -->
+                <div id="panel-wx" class="flex flex-col gap-12 absolute top-0 left-0 w-full transition-opacity duration-300 opacity-0 pointer-events-none z-0">
+                    <div class="space-y-2">
+                        <h2 class="text-xs font-bold tracking-[0.3em] text-[#8C7B6C] uppercase">Identity Node 02</h2>
+                        <!-- 视觉分段显示，更符合手机号阅读习惯 -->
+                        <h1 onclick="copyText('19561900237')" class="text-5xl md:text-7xl font-bold tracking-tighter leading-none text-[#2A2A2A] cursor-pointer hover:text-[#8C7B6C] transition-colors duration-300">
+                            195<span class="text-[#8C7B6C] mx-2">/</span>6190<br>0237
+                        </h1>
+                    </div>
+                    
+                    <div class="w-full h-px bg-[#2A2A2A] opacity-20 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 h-full bg-[#2A2A2A] line-expand"></div>
+                    </div>
+
+                    <p class="text-sm md:text-base leading-relaxed text-[#555] max-w-md font-serif italic">
+                        "此号码同步微信。点击复制。"
+                    </p>
+
+                    <div class="pt-4">
+                        <button onclick="copyText('19561900237')" 
+                                class="w-full md:w-auto bg-[#E6E4DD] text-[#2A2A2A] px-10 py-5 text-sm font-bold tracking-[0.2em] uppercase brutal-shadow border border-[#2A2A2A] hover:bg-white transition-colors duration-300 cursor-pointer">
+                            COPY WECHAT ID
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 底部装饰编号 -->
             <div class="absolute bottom-4 right-4 font-mono text-[10px] opacity-40">
-                REF: 001-A
+                REF: DUAL-CORE
             </div>
         </div>
 
@@ -138,84 +185,65 @@
     </footer>
 
     <script>
-        const qqNumber = "3853368788";
-        const btn = document.getElementById('action-btn');
-        const statusText = document.getElementById('status-text');
-        const wxMask = document.getElementById('wx-mask');
-        const toast = document.getElementById('toast');
+        function switchTab(tab) {
+            const qqPanel = document.getElementById('panel-qq');
+            const wxPanel = document.getElementById('panel-wx');
+            const qqBtn = document.getElementById('btn-qq');
+            const wxBtn = document.getElementById('btn-wx');
+            const protocolText = document.getElementById('protocol-text');
 
-        // 检测微信或QQ内置浏览器
-        function isWeChatOrQQ() {
-            const ua = navigator.userAgent.toLowerCase();
-            return ua.indexOf('micromessenger') !== -1 || ua.indexOf('qq/') !== -1;
+            if (tab === 'qq') {
+                // 显示 QQ
+                qqPanel.style.opacity = '1';
+                qqPanel.style.pointerEvents = 'auto';
+                qqPanel.style.zIndex = '10';
+                
+                wxPanel.style.opacity = '0';
+                wxPanel.style.pointerEvents = 'none';
+                wxPanel.style.zIndex = '0';
+
+                // 按钮样式
+                qqBtn.className = 'nav-btn-active px-4 py-1 text-xs font-bold tracking-widest uppercase border border-[#2A2A2A] transition-colors duration-300';
+                wxBtn.className = 'nav-btn-inactive px-4 py-1 text-xs font-bold tracking-widest uppercase border border-[#2A2A2A] transition-colors duration-300';
+                
+                protocolText.innerText = 'Protocol: QQ_LINK';
+            } else {
+                // 显示 微信
+                wxPanel.style.opacity = '1';
+                wxPanel.style.pointerEvents = 'auto';
+                wxPanel.style.zIndex = '10';
+
+                qqPanel.style.opacity = '0';
+                qqPanel.style.pointerEvents = 'none';
+                qqPanel.style.zIndex = '0';
+
+                // 按钮样式
+                wxBtn.className = 'nav-btn-active px-4 py-1 text-xs font-bold tracking-widest uppercase border border-[#2A2A2A] transition-colors duration-300';
+                qqBtn.className = 'nav-btn-inactive px-4 py-1 text-xs font-bold tracking-widest uppercase border border-[#2A2A2A] transition-colors duration-300';
+
+                protocolText.innerText = 'Protocol: WX_CELL';
+            }
         }
 
-        // 检测移动端
-        function isMobile() {
-            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        }
-
-        // 复制功能
-        function copyToClipboard(text) {
+        function copyText(text) {
             navigator.clipboard.writeText(text).then(() => {
                 showToast();
             }).catch(err => {
-                // 降级处理：创建一个临时textarea
-                const textarea = document.createElement('textarea');
-                textarea.value = text;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand("Copy");
+                textArea.remove();
                 showToast();
             });
         }
 
         function showToast() {
-            toast.classList.remove('hidden');
-            toast.classList.add('toast-anim');
-            setTimeout(() => {
-                toast.classList.remove('toast-anim');
-                toast.classList.add('hidden');
-            }, 2000);
-        }
-
-        // 核心点击逻辑
-        btn.addEventListener('click', function() {
-            if (isWeChatOrQQ()) {
-                // 如果在微信内，显示遮罩
-                wxMask.classList.remove('hidden');
-                wxMask.classList.add('flex');
-                return;
-            }
-
-            if (isMobile()) {
-                statusText.innerText = "PINGING MOBILE...";
-                // 尝试多种移动端协议
-                // 1. 尝试 WPA Chat (最常用)
-                const wpaUrl = `mqqwpa://im/chat?chat_type=wpa&uin=${qqNumber}&version=1&src_type=web&web_src=oicqzone.com`;
-                window.location.href = wpaUrl;
-                
-                // 2. 备用：如果500ms后还在当前页面，尝试复制并提示
-                setTimeout(() => {
-                   // 可以在这里加一个判断，如果页面没有切走，说明唤起失败
-                   // 但浏览器通常不允许检测是否切走，所以我们默认给用户一个反馈
-                   statusText.innerText = "PROTOCOL SENT";
-                }, 500);
-            } else {
-                statusText.innerText = "PINGING DESKTOP...";
-                // PC端标准协议
-                window.location.href = `tencent://AddContact/?from=pc&uin=${qqNumber}`;
-            }
-        });
-
-        // 初始化状态显示
-        if (isWeChatOrQQ()) {
-            statusText.innerText = "RESTRICTED ENV";
-        } else if (isMobile()) {
-            statusText.innerText = "MOBILE NODE";
-        } else {
-            statusText.innerText = "DESKTOP TERMINAL";
+            const toast = document.getElementById('toast');
+            toast.classList.remove('toast-active');
+            void toast.offsetWidth; 
+            toast.classList.add('toast-active');
         }
     </script>
 </body>

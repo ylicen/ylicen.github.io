@@ -3,496 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python 脚本实现教程 - 云织絮语</title>
-    <link rel="icon" type="image/1762142964448_download.png"  href="title/favicon.png">
-    <link rel="stylesheet" href="style.css">
+    <title>添加好友 | Connect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 
+           自定义字体设置 
+           使用系统字体栈，但通过CSS特性调整字间距和渲染方式，
+           以达到类似Helvetica或Akzidenz-Grotesk的冷静感。
+        */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* 
+           噪点纹理层 
+           这是实现“粗粝感”的关键，通过SVG噪点叠加，
+           给平滑的数字屏幕带来一种类似纸张或石材的物理触感。
+        */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.08;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* 
+           硬阴影效果 (Hard Shadow)
+           新粗野主义的标志，去除模糊，强调物体占据空间的体积感。
+        */
+        .brutal-shadow {
+            box-shadow: 6px 6px 0px 0px #2A2A2A;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .brutal-shadow:hover {
+            box-shadow: 2px 2px 0px 0px #2A2A2A;
+            transform: translate(4px, 4px);
+        }
+
+        /* 装饰线条动画 */
+        .line-expand {
+            width: 0;
+            transition: width 0.8s ease-out;
+        }
+        .group:hover .line-expand {
+            width: 100%;
+        }
+    </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>Python 实例教程</h1>
-            <p>一份关于 GUI、3D 图形和图像处理的实践指南</p>
-        </header>
+<body class="bg-[#E6E4DD] text-[#2A2A2A] h-screen w-full flex flex-col items-center justify-center overflow-hidden relative selection:bg-[#8C7B6C] selection:text-white">
 
-        <nav class="sidebar-nav">
-            <ul>
-                <li><a href="#section-1">1. 猜数字游戏</a></li>
-                <li><a href="#section-2">2. 3D 茶壶</a></li>
-                <li><a href="#section-3">3. 图像水印</a></li>
-            </ul>
-        </nav>
+    <!-- 噪点纹理层 -->
+    <div class="noise-overlay"></div>
 
-        <main>
-            <article id="section-1" class="tutorial-section">
-                <h2>1. Tkinter 猜数字游戏</h2>
-                <p>这是一个使用 Python 内置的 <code>tkinter</code> 库创建的经典猜数字游戏。通过这个实例，你可以学习到如何构建一个简单的图形用户界面（GUI），包括创建窗口、放置标签和按钮、处理用户输入以及响应事件。</p>
-                <details>
-                    <summary>查看/隐藏代码 (1.py)</summary>
-                    <div class="code-block-wrapper">
-                        <button class="copy-btn" title="复制代码">复制</button>
-                        <pre><code class="language-python">import random
-import tkinter
-import tkinter.messagebox
-import tkinter.simpledialog
-
-root = tkinter.Tk()
-# 窗口标题
-root.title('猜数游戏——by 董付国')
-# 窗口初始大小和位置
-root.geometry('280x80+400+300')
-# 不允许改变窗口大小
-root.resizable(False, False)
-# 用户猜的数
-varNumber = tkinter.StringVar(root, value='0')
-# 允许猜的总次数
-totalTimes = tkinter.IntVar(root, value=0)
-# 已猜次数
-already = tkinter.IntVar(root, value=0)
-# 当前生成的随机数
-currentNumber = tkinter.IntVar(root, value=0)
-# 玩家玩游戏的总次数
-times = tkinter.IntVar(root, value=0)
-# 玩家猜对的总次数
-right = tkinter.IntVar(root, value=0)
-
-lb = tkinter.Label(root, text='请输入一个整数:')
-lb.place(x=10, y=10, width=100, height=20)
-# 用户猜数并输入的文本框
-entryNumber = tkinter.Entry(root, width=140, textvariable=varNumber)
-entryNumber.place(x=110, y=10, width=140, height=20)
-# 只有开始游戏以后才允许输入
-entryNumber['state'] = 'disabled'
-
-# 关闭程序时提示战绩
-def closewindow():
-    message = '共玩游戏 {0} 次, 猜对 {1} 次! \n 欢迎下次再玩!'
-    message = message.format(times.get(), right.get())
-    tkinter.messagebox.showinfo('战绩', message)
-    root.destroy()
-
-root.protocol('WM_DELETE_WINDOW', closewindow)
-
-# 按钮单击事件处理函数
-def buttonClick():
-    if button['text'] == 'Start Game':
-        # 每次游戏时允许用户自定义数值范围
-        # 玩家必须输入正确的数
-        while True:
-            try:
-                start = tkinter.simpledialog.askinteger('允许的最小整数', '最小数', initialvalue=1)
-                break
-            except:
-                pass
-        while True:
-            try:
-                end = tkinter.simpledialog.askinteger('允许的最大整数', '最大数', initialvalue=10)
-                break
-            except:
-                pass
-
-        # 在用户自定义的数值范围内生成随机数
-        currentNumber.set(random.randint(start, end))
-        # 用户自定义一共允许猜几次
-        # 玩家必须输入正确的整数
-        while True:
-            try:
-                t=tkinter.simpledialog.askinteger('最多允许猜几次?', '总次数', initialvalue=3)
-                totalTimes.set(t)
-                break
-            except:
-                pass
-
-        # 已猜次数初始化为 0
-        already.set(0)
-        button['text'] = '剩余次数:' + str(t)
-        # 把文本框初始化为 0
-        varNumber.set('0')
-        # 允许用户开始输入整数
-        entryNumber['state'] = 'normal'
-        # 玩游戏的次数加 1
-        times.set(times.get()+1)
-    else:
-        # 一共允许猜几次
-        total = totalTimes.get()
-        # 本次游戏的正确答案
-        current = currentNumber.get()
-        # 玩家本次猜的数
-        try:
-            x = int(varNumber.get())
-        except:
-            tkinter.messagebox.showerror('抱歉', '必须输入整数')
-            return
-
-        if x == current:
-            tkinter.messagebox.showinfo('恭喜', '猜对了')
-            button['text'] = 'Start Game'
-            # 禁用文本框
-            entryNumber['state'] = 'disabled'
-            right.set(right.get()+1)
-        else:
-            # 已猜次数加 1
-            already.set(already.get()+1)
-            if x > current:
-                tkinter.messagebox.showerror('抱歉', '猜的数太大了')
-            else:
-                tkinter.messagebox.showerror('抱歉', '猜的数太小了')
-            # 可猜次数用完了
-            if already.get() == total:
-                tkinter.messagebox.showerror('抱歉',
-                                            '游戏结束了,正确的数是:' +
-                                            str(currentNumber.get()))
-
-                button['text'] = 'Start Game'
-                # 禁用文本框
-                entryNumber['state'] = 'disabled'
-            else:
-                button['text'] = '剩余次数:' + str(total-already.get())
-
-# 在窗口上创建按钮,并设置事件处理函数
-button = tkinter.Button(root, text='Start Game', command=buttonClick)
-button.place(x=10, y=40, width=250, height=20)
-
-# 启动消息主循环
-root.mainloop()
-</code></pre>
-                    </div>
-                </details>
-            </article>
-
-            <article id="section-2" class="tutorial-section">
-                <h2>2. PyOpenGL 渲染 3D 茶壶</h2>
-                <p>这个脚本演示了如何使用 <code>PyOpenGL</code> 库来创建一个 3D 渲染窗口，并绘制一个经典的实体茶壶。代码中包含了场景初始化、光照设置、透视投影以及键盘交互，你可以通过按键来旋转和缩放这个 3D 模型。</p>
-                
-                <div class="env-preparation">
-                    <h4>环境准备</h4>
-                    <p>运行此脚本前，请确保已安装所需的第三方库。PyOpenGL 自身负责 3D 渲染，但它需要一个“后端”来创建窗口和处理键盘输入，而 Pygame 正是为此提供了便捷的支持。点击右侧按钮可一键复制安装命令。</p>
-                    <div class="code-block-wrapper">
-                        <button class="copy-btn" title="复制代码">复制</button>
-                        <pre><code class="language-bash">pip install PyOpenGL pygame</code></pre>
-                    </div>
-                </div>
-
-                <details>
-                    <summary>查看/隐藏代码 (2.py)</summary>
-                    <div class="code-block-wrapper">
-                        <button class="copy-btn" title="复制代码">复制</button>
-                        <pre><code class="language-python">import sys
-from OpenGL.GL import *
-from OpenGL.GLUT import *
-from OpenGL.GLU import *
-
-class MyPyOpenGLTest:
-    def __init__(self, width=640, height=480, title=b'SolidTeapot'):
-        glutInit(sys.argv)
-        glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH)
-        glutInitWindowSize(width, height)
-        self.window = glutCreateWindow(title)
-        glutDisplayFunc(self.Draw)
-
-        # 指定键盘事件处理函数
-        glutKeyboardFunc(self.KeyPress)
-        glutIdleFunc(self.Draw)
-        self.InitGL(width, height)
-        # 绕各坐标轴旋转的角度
-        self.x = 0.0
-        self.y = 0.0
-        self.z = 0.0
-        # 缩放比例
-        self.s = 1.0
-
-    def KeyPress(self, key, x, y):
-        # 根据不同的按键决定缩放比例和每个轴的旋转角度
-        if key == b'a':
-            self.x += 1
-        elif key == b's':
-            self.x -= 1
-        elif key == b'j':
-            self.y += 1
-        elif key == b'k':
-            self.y -= 1
-        elif key == b'g':
-            self.z += 1
-        elif key == b'h':
-            self.z -= 1
-        elif key == b'x':
-            self.s += 0.3
-        elif key == b'w':
-            self.s -= 0.3
-
-    # 绘制图形
-    def Draw(self):
-        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-        glLoadIdentity()
-        # 平移
-        glTranslatef(0.0, 0.0, -8.0)
-        # 分别绕 x、y、z 轴旋转
-        glRotatef(self.x, 1.0, 0.0, 0.0)
-        glRotatef(self.y, 0.0, 1.0, 0.0)
-        glRotatef(self.z, 0.0, 0.0, 1.0)
-        # 各方向等比例缩放
-        glScalef(self.s, self.s, self.s)
-        # 绘制茶壶
-        glColor3f(0.8, 0.3, 1.0)
-        glutSolidTeapot(1.0)
-
-        glutSwapBuffers()
-
-    def InitGL(self, width, height):
-        # 初始化窗口背景为白色
-        glClearColor(1.0, 1.0, 1.0, 1.0)
-        glClearDepth(1.0)
-        glDepthFunc(GL_LESS)
-        # 设置材质与光源属性
-        mat_sp = (1.0, 1.0, 1.0, 1.0)
-        mat_sh = [50.0]
-        light_position = (-0.5, 1.5, 1.0)
-        yellow_1 = (1, 0.7, 0, 1)
-        ambient = (0.1, 0.8, 0.2, 1.0)
-
-        glMaterialfv(GL_FRONT, GL_SPECULAR, mat_sp)
-        glMaterialfv(GL_FRONT, GL_SHININESS, mat_sh)
-        glLightfv(GL_LIGHT0, GL_POSITION, light_position)
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, yellow_1)
-        glLightfv(GL_LIGHT0, GL_SPECULAR, yellow_1)
-        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambient)
-
-        # 启用光照模型
-        glEnable(GL_LIGHTING)
-        glEnable(GL_LIGHT0)
-        glEnable(GL_DEPTH_TEST)
-
-        # 光滑渲染
-        glEnable(GL_BLEND)
-        glShadeModel(GL_SMOOTH)
-        glEnable(GL_POINT_SMOOTH)
-        glEnable(GL_LINE_SMOOTH)
-        glEnable(GL_POLYGON_SMOOTH)
-
-        glMatrixMode(GL_PROJECTION)
-        # 反走样，也称为抗锯齿
-        glHint(GL_POINT_SMOOTH_HINT, GL_NICEST)
-        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
-        glHint(GL_POLYGON_SMOOTH_HINT, GL_FASTEST)
-        glLoadIdentity()
-        # 透视投影变换
-        gluPerspective(45.0, width/height, 0.1, 100.0)
-        glMatrixMode(GL_MODELVIEW)
-
-    def MainLoop(self):
-        glutMainLoop()
-
-if __name__ == '__main__':
-    w = MyPyOpenGLTest()
-    w.MainLoop()
-</code></pre>
-                    </div>
-                </details>
-            </article>
-
-            <article id="section-3" class="tutorial-section">
-                <h2>3. Pillow 图像水印技术</h2>
-                <p>这部分包含两个脚本，都使用了强大的 <code>Pillow</code> 库来处理图像。它们分别演示了两种不同的添加水印的方法：可见水印和不可见的隐写水印。</p>
-                
-                <div class="env-preparation">
-                    <h4>环境准备</h4>
-                    <p>运行此脚本前，请确保已安装 Pillow 库。点击右侧按钮可一键复制安装命令。</p>
-                    <div class="code-block-wrapper">
-                        <button class="copy-btn" title="复制代码">复制</button>
-                        <pre><code class="language-bash">pip install Pillow</code></pre>
-                    </div>
-                </div>
-
-                <div class="env-preparation resource-preparation">
-                    <h4>资源准备 (适用于3.1和3.2)</h4>
-                    <p>为了能成功运行可见与不可见水印脚本，您需要准备一个水印图和一个目标图。请将准备好的BMP和PNG文件与脚本放在同一个目录下。</p>
-                    <div class="download-buttons">
-                    </div>
-                </div>
-
-                <h3>3.1 可见水印</h3>
-                <p>此脚本演示了一种直接的、可见的水印添加方法。它的工作流程如下：首先，脚本会读取水印图片（`fox.bmp`），并将其所有非纯白色的像素点及其坐标存储起来。然后，它会遍历当前目录下的所有图片文件，在目标图的左上角、中心或右下角三个位置中随机选择一个，将之前存储的水印像素精准地绘制上去，从而生成一张带有清晰可见水印的新图。</p>
-                
-                <div class="effect-showcase">
-                    <figure>
-                        <img src="blank_white.png" alt="添加水印前的空白图片">
-                        <figcaption>处理前：原始图片</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="blank_white_new_new.png" alt="添加水印后的图片">
-                        <figcaption>处理后：添加可见水印</figcaption>
-                    </figure>
-                </div>
-
-                <details>
-                    <summary>查看/隐藏代码 (3.1.py)</summary>
-                    <div class="code-block-wrapper">
-                        <button class="copy-btn" title="复制代码">复制</button>
-                        <pre><code class="language-python">from random import randint
-from os import listdir
-from PIL import Image
-
-# 打开并读取其中的水印像素, 也就是那些不是白色背景的像素
-# 读到内存中, 放到字典中以供快速访问
-im = Image.open('fox.bmp')
-width, height = im.size
-pixels = dict()
-for w in range(width):
-    for h in range(height):
-        c = im.getpixel((w,h))[:3]
-        if c != (255, 255, 255):
-            pixels[(w,h)] = c
-
-def addWaterMark(srcDir):
-    # 获取当前所有 BMP 图像文件列表
-    picfiles = [fn for fn in listdir(srcDir)
-                if fn.endswith(('.bmp', '.jpg', '.png'))]
-    
-    # 遍历所有文件, 为每个图像添加水印
-    for fn in picfiles:
-        im1 = Image.open(fn)
-        w, h = im1.size
-        
-        # 如果图片尺寸小于水印图片, 不加水印
-        if w < width or h < height:
-            continue
-            
-        # 在原始图像左上角、中间或右下角添加数字水印
-        # 具体位置根据 position 进行随机选择
-        P = {0: (0, 0), 1: ((w-width)//2, (h-height)//2), 2: (w-width, h-height)}
-        Position = randint(0, 2)
-        top, left = P.get(Position, (0, 0))
-        
-        # 修改像素值, 添加水印
-        for p, c in pixels.items():
-            im1.putpixel((p[0]+top, p[1]+left), c)
-            
-        # 保存加入水印之后的新图像文件
-        im1.save(fn[:-4] + '_new' + fn[-4:])
-
-# 为当前文件夹中的图像文件添加水印
-addWaterMark('.')
-</code></pre>
-                    </div>
-                </details>
-
-                <h3>3.2 不可见水印 (数字盲水印)</h3>
-                <p>不可见水印，也称为数字盲水印或隐写术，是一种更高级、更隐蔽的水印技术。它的核心思想是将水印信息（另一张图的像素）“溶解”并随机散布到原始图像的像素中，使得人眼完全无法察觉到任何变化。这个过程是可逆的，但需要一个关键的“密钥”——在本例中，就是一个日志文件（`log` file）。</p>
-                <p>脚本中的 <code>mergeWaterMark</code> 函数负责嵌入水印，它会记录下每一个水印像素被嵌入到原图中的确切坐标，并保存在日志文件中。而 <code>restoreWaterMark</code> 函数则扮演“解密者”的角色，它读取日志文件，根据其中记录的坐标，从已嵌入水印的图片中逐个提取出隐藏的像素，最终完美地重构出原始的水印图像。没有这个日志文件，提取水印将无从谈起。</p>
-
-                <div class="effect-showcase">
-                    <figure>
-                        <img src="blank_white.png" alt="原始图片">
-                        <figcaption>1. 原始图片</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="blank_white_new.png" alt="嵌入不可见水印后的图片">
-                        <figcaption>2. 嵌入水印后 (预期视觉无变化)</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="fox.bmp" alt="成功提取出的水印">
-                        <figcaption>3. 成功提取出的水印</figcaption>
-                    </figure>
-                </div>
-
-                <details>
-                    <summary>查看/折叠 3.2.py 源码</summary>
-                    <div class="code-block-wrapper">
-                        <button class="copy-btn" title="复制代码">复制</button>
-                        <pre><code class="language-python">from os import remove
-from os.path import isfile
-from random import sample, choice
-from PIL import Image
-
-def mergeWaterMark(originPic, watermarkPic, logTxt):
-    # 原始图片和水印文件必须为图片格式
-    if ((not originPic.endswith(('.jpg', '.bmp', '.png'))) or
-        (not watermarkPic.endswith(('.jpg', '.bmp', '.png')))):
-        return 'Error format.'
-
-    # 打开原图和水印图片, 并获取大小
-    imOrigin = Image.open(originPic)
-    originWidth, originHeight = imOrigin.size
-    imWaterMark = Image.open(watermarkPic)
-    watermarkWidth, watermarkHeight = imWaterMark.size
-
-    # 随机生成水印位置
-    allPositions = [(w,h) for w in range(originWidth)
-                    for h in range(originHeight)]
-    positions = sample(allPositions, watermarkWidth*watermarkHeight)
-
-    fpLog = open(logTxt, 'w')
-    # 写入水印文件的大小
-    fpLog.write(str((watermarkWidth, watermarkHeight)) + '\n')
-
-    for w in range(watermarkWidth):
-        for h in range(watermarkHeight):
-            c = imWaterMark.getpixel((w,h))
-            c = c[:3]  # 取 RGB 三通道值
-            # 只写入不是白色的像素 (255, 255, 255)
-            if c != (255,255,255):
-                p = choice(positions)
-                # 写入像素值
-                imOrigin.putpixel(p, c)
-                # 避免重复修改同一个像素
-                positions.remove(p)
-                # 生成日志文件, 用来提取水印 (p 是原图坐标，(w,h) 是水印图坐标)
-                fpLog.write(str(p+(w,h))+'\n')
-
-    fpLog.close()
-    # 生成加入水印的新图片
-    # 假设文件格式是 .ext，[:-4] 取文件名，[-4:] 取扩展名
-    imOrigin.save(originPic[:-4] + '_new' + originPic[-4:])
-
-def restoreWaterMark(mergedPic, logTxt, watermarkPic):
-    # 首先删除原来提取过的水印文件
-    if isfile(watermarkPic):
-        remove(watermarkPic)
-
-    imMerged = Image.open(mergedPic)
-    with open(logTxt) as fp:
-        for line in fp:
-            # 读取每一行并还原为元组
-            line = eval(line.strip())
-            # 第一行是水印图片尺寸, 先创建水印文件
-            if len(line) == 2:
-                # line 包含 (width, height)
-                imWaterMark = Image.new('RGB', line, (255,255,255))
-            else:
-                # 提取水印像素并写入水印文件
-                # line[0], line[1] 是嵌入图中的坐标
-                c = imMerged.getpixel(((line[0], line[1])))
-                c = c[:3]
-                # line[2], line[3] 是水印图中的坐标
-                imWaterMark.putpixel(((line[2], line[3])), c)
-
-    # 保存提取的水印
-    imWaterMark.save(watermarkPic)
-
-# --- 脚本主执行部分 ---
-
-# 1. 添加水印 (请确保 'blank_white_1024x1024.png' 和 'fox.bmp' 文件存在)
-mergeWaterMark('blank_white_1024x1024.png', 'fox.bmp', 'watermark_log.txt')
-
-# 2. 提取水印 (将使用上一步生成的 'blank_white_1024x1024_new.png' 和 'watermark_log.txt')
-restoreWaterMark('blank_white_1024x1024_new.png', 'watermark_log.txt', 'restored_watermark.bmp')
-</code></pre>
-                    </div>
-                </details>
-
-                <div class="env-preparation">
-                    <h4>第二张图片噪点现象说明</h4>
-                    <p><strong>噪点产生原因</strong>：水印图片中的所有非白色区域（包括边缘的半透明像素、抗锯齿像素等）都会作为噪点随机散布到原图中。512×512的fox.bmp被分解成约26万个独立像素，随机撒在1024×1024的白色画布上，原本连续的图像变成了随机分布的彩色点。</p>
-                
-                    <p><strong>减少噪点建议</strong>：使用更小的水印图片、使用只有黑白两色的简单水印，或者接受这就是算法的正常表现，专注于水印的提取功能是否正常。</p>
-                </div>
-
-            </article>
-        </main>
-
-        <footer>
-            <p>移动软件5班提供</p>
-        </footer>
+    <!-- 装饰性网格线：营造结构感 -->
+    <div class="absolute top-0 left-0 w-full h-full pointer-events-none z-0 flex justify-between px-8 md:px-24">
+        <div class="w-px h-full bg-[#2A2A2A] opacity-10"></div>
+        <div class="w-px h-full bg-[#2A2A2A] opacity-10"></div>
     </div>
-    <script src="script.js"></script>
+    <div class="absolute top-0 left-0 w-full h-full pointer-events-none z-0 flex flex-col justify-between py-8 md:py-24">
+        <div class="h-px w-full bg-[#2A2A2A] opacity-10"></div>
+        <div class="h-px w-full bg-[#2A2A2A] opacity-10"></div>
+    </div>
+
+    <!-- 主体容器 -->
+    <main class="relative z-10 max-w-2xl w-full px-6 md:px-0">
+        
+        <!-- 顶部元数据：冷静的说明 -->
+        <div class="flex justify-between items-end mb-8 opacity-60 font-mono text-xs tracking-widest uppercase">
+            <span>Protocol: UIN_ADD</span>
+            <span>Loc: Tencent_Server</span>
+        </div>
+
+        <!-- 核心卡片 -->
+        <div class="bg-[#F0EFEC] border border-[#2A2A2A] p-8 md:p-16 relative group">
+            
+            <!-- 左上角装饰块 -->
+            <div class="absolute top-0 left-0 w-4 h-4 bg-[#2A2A2A]"></div>
+            
+            <!-- 内容区域 -->
+            <div class="flex flex-col gap-12">
+                
+                <!-- 标题区 -->
+                <div class="space-y-2">
+                    <h2 class="text-xs font-bold tracking-[0.3em] text-[#8C7B6C] uppercase">Identity Node</h2>
+                    <h1 class="text-5xl md:text-7xl font-bold tracking-tighter leading-none text-[#2A2A2A]">
+                        3853<span class="text-[#8C7B6C]">.</span>36<br>8788
+                    </h1>
+                </div>
+
+                <!-- 分割线 -->
+                <div class="w-full h-px bg-[#2A2A2A] opacity-20 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 h-full bg-[#2A2A2A] line-expand"></div>
+                </div>
+
+                <!-- 描述文字 -->
+                <p class="text-sm md:text-base leading-relaxed text-[#555] max-w-md font-serif italic">
+                    "点击下方按钮，添加QQ好友。"
+                </p>
+
+                <!-- 交互按钮 -->
+                <div class="pt-4">
+                    <a href="tencent://AddContact/?from=pc&uin=3853368788" 
+                       class="inline-block w-full md:w-auto bg-[#2A2A2A] text-[#E6E4DD] px-10 py-5 text-sm font-bold tracking-[0.2em] uppercase brutal-shadow border border-[#2A2A2A] hover:bg-[#8C7B6C] transition-colors duration-300">
+                        Initiate Connection
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- 右下角装饰 -->
+            <div class="absolute bottom-4 right-4 font-mono text-[10px] opacity-40">
+                REF: 001-A
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 底部版权：像碑文一样微小 -->
+    <footer class="absolute bottom-8 text-[10px] font-mono opacity-40 tracking-widest text-center w-full z-10">
+        DESIGNED FOR SILENCE © 2024
+    </footer>
+
 </body>
 </html>

@@ -31,12 +31,6 @@ const ALLOWED_DOWNLOAD_HOSTS = Array.from(
   new Set([R2_DOWNLOAD_HOST, ...FALLBACK_DOWNLOAD_HOSTS]),
 )
 
-const platformList: Array<{ key: PlatformKey; label: string }> = [
-  { key: "windows", label: "Windows" },
-  { key: "macos", label: "macOS" },
-  { key: "linux", label: "Linux" },
-]
-
 const manifest = ref<UpdateManifest | null>(null)
 const loading = ref(true)
 const errorMessage = ref("")
@@ -69,8 +63,9 @@ const resolvePlatformLink = (platform: PlatformKey) => {
   return ""
 }
 
+const windowsDownloadLink = computed(() => resolvePlatformLink("windows"))
 const releaseVersion = computed(() => manifest.value?.version ?? "")
-const hasAnyDownload = computed(() => platformList.some(({ key }) => !!resolvePlatformLink(key)))
+const hasWindowsDownload = computed(() => !!windowsDownloadLink.value)
 
 onMounted(async () => {
   try {
@@ -82,8 +77,8 @@ onMounted(async () => {
     const data = (await response.json()) as UpdateManifest
     manifest.value = data
 
-    if (!hasAnyDownload.value) {
-      errorMessage.value = "R2 清单已读取，但尚未提供可用平台安装包。"
+    if (!hasWindowsDownload.value) {
+      errorMessage.value = "R2 清单已读取，但当前仅支持 Windows 且安装包暂不可用。"
     }
   } catch {
     errorMessage.value = "当前无法读取 R2 下载清单，请稍后重试。"
@@ -112,30 +107,26 @@ onMounted(async () => {
       <p v-if="loading" class="mt-10 text-center text-sm text-zinc-600">正在读取 R2 最新下载信息...</p>
       <p v-else-if="errorMessage" class="mt-10 text-center text-sm text-zinc-600">{{ errorMessage }}</p>
 
-      <div v-if="!loading" class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
-        <div
-          v-for="platform in platformList"
-          :key="platform.key"
-          class="rounded-2xl border border-zinc-200 bg-white px-5 py-6 text-center shadow-sm"
-        >
-          <p class="text-sm text-zinc-600">{{ platform.label }}</p>
+      <div v-if="!loading" class="mt-10 max-w-xl mx-auto">
+        <div class="rounded-2xl border border-zinc-200 bg-white px-6 py-8 text-center shadow-sm">
+          <p class="text-sm text-zinc-600">Windows（当前唯一支持平台）</p>
 
           <a
-            v-if="resolvePlatformLink(platform.key)"
-            :href="resolvePlatformLink(platform.key)"
+            v-if="windowsDownloadLink"
+            :href="windowsDownloadLink"
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-3 inline-flex items-center justify-center rounded-full bg-zinc-800 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-zinc-700"
+            class="mt-4 inline-flex items-center justify-center rounded-full bg-zinc-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-700"
           >
-            从 R2 下载
+            免费下载 Windows 版
           </a>
 
-          <p v-else class="mt-2 text-zinc-900 font-semibold">暂未发布</p>
+          <p v-else class="mt-3 text-zinc-900 font-semibold">暂未发布</p>
         </div>
       </div>
 
-      <p v-if="!loading && !hasAnyDownload" class="mt-6 text-center text-xs text-zinc-500">
-        如果你已在 GitHub Releases 发布新版本，请先将安装包同步到 R2，再更新 `latest.json` 的下载地址。
+      <p v-if="!loading && !hasWindowsDownload" class="mt-6 text-center text-xs text-zinc-500">
+        发布新版本后，请先同步 Windows 安装包到 R2 并更新 latest.json。
       </p>
     </div>
   </section>

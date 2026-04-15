@@ -12,6 +12,10 @@ interface UpdateManifest {
 
 const DEFAULT_R2_MANIFEST_URL = "https://dl.ylicen.top/latest.json"
 const R2_MANIFEST_URL = import.meta.env.VITE_R2_MANIFEST_URL ?? DEFAULT_R2_MANIFEST_URL
+const FALLBACK_DOWNLOAD_HOSTS = [
+  "dl.ylicen.top",
+  "pub-1745b19bd2c3417582bf63e8b26caab0.r2.dev",
+]
 
 const resolveDefaultHost = () => {
   try {
@@ -22,6 +26,10 @@ const resolveDefaultHost = () => {
 }
 
 const R2_DOWNLOAD_HOST = import.meta.env.VITE_R2_DOWNLOAD_HOST ?? resolveDefaultHost()
+
+const ALLOWED_DOWNLOAD_HOSTS = Array.from(
+  new Set([R2_DOWNLOAD_HOST, ...FALLBACK_DOWNLOAD_HOSTS]),
+)
 
 const platformList: Array<{ key: PlatformKey; label: string }> = [
   { key: "windows", label: "Windows" },
@@ -38,7 +46,11 @@ const isR2Link = (value?: string) => {
 
   try {
     const parsed = new URL(value)
-    return parsed.hostname === R2_DOWNLOAD_HOST || parsed.hostname.endsWith(`.${R2_DOWNLOAD_HOST}`)
+    if (parsed.protocol !== "https:") return false
+
+    return ALLOWED_DOWNLOAD_HOSTS.some(
+      (host) => parsed.hostname === host || parsed.hostname.endsWith(`.${host}`),
+    )
   } catch {
     return false
   }

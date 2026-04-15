@@ -1,0 +1,15 @@
+{
+  "name": "ylicen-backend",
+  "main": "src/index.ts",
+  "compatibility_date": "2024-09-19",
+  "env": {
+    "production": {
+      "routes": [
+        {
+          "pattern": "api.ylicen.top/api/*",
+          "zone_name": "ylicen.top"
+        }
+      ]
+    }
+  }
+}

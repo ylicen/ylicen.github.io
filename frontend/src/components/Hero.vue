@@ -1,35 +1,12 @@
 <script setup lang="ts">
 import { Download, ChevronRight } from "lucide-vue-next"
-import { computed, onMounted, ref } from "vue"
+import { onMounted } from "vue"
+import { useReleaseManifest } from "../composables/useReleaseManifest"
 
-interface UpdateManifest {
-  version?: string
-}
-
-const DEFAULT_R2_MANIFEST_URL = "https://dl.ylicen.top/latest.json"
-const R2_MANIFEST_URL = import.meta.env.VITE_R2_MANIFEST_URL ?? DEFAULT_R2_MANIFEST_URL
-const FALLBACK_VERSION = "v1.2.1"
-
-const releaseVersion = ref(FALLBACK_VERSION)
-
-const displayVersion = computed(() => {
-  const rawVersion = releaseVersion.value.trim()
-  if (!rawVersion) return FALLBACK_VERSION
-  return rawVersion.startsWith("v") ? rawVersion : `v${rawVersion}`
-})
+const { normalizedVersion, loadManifest } = useReleaseManifest()
 
 onMounted(async () => {
-  try {
-    const response = await fetch(R2_MANIFEST_URL, { cache: "no-store" })
-    if (!response.ok) return
-
-    const data = (await response.json()) as UpdateManifest
-    if (typeof data.version === "string" && data.version.trim()) {
-      releaseVersion.value = data.version.trim()
-    }
-  } catch {
-    // Keep fallback version when manifest is temporarily unavailable.
-  }
+  await loadManifest()
 })
 </script>
 
@@ -44,7 +21,9 @@ onMounted(async () => {
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-zinc-500 opacity-75"></span>
           <span class="relative inline-flex rounded-full h-2 w-2 bg-zinc-700"></span>
         </span>
-        <span class="text-xs font-semibold text-zinc-700 tracking-wide uppercase">LuminaDB {{ displayVersion }} 现已发布</span>
+        <span class="text-xs font-semibold text-zinc-700 tracking-wide uppercase">
+          LuminaDB {{ normalizedVersion || "最新版" }} 现已发布
+        </span>
       </div>
       
       <h1 class="font-display text-4xl sm:text-5xl md:text-7xl font-extrabold text-zinc-900 tracking-tight leading-[1.15] mb-6 md:mb-8">

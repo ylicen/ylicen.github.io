@@ -1,17 +1,8 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue"
+import { computed, onMounted } from "vue"
+import { useReleaseManifest } from "../composables/useReleaseManifest"
+import type { PlatformKey } from "../composables/useReleaseManifest"
 
-type PlatformKey = "windows" | "macos" | "linux"
-
-interface UpdateManifest {
-  version?: string
-  dateLabel?: string
-  downloadUrl?: string
-  downloads?: Partial<Record<PlatformKey, string>>
-}
-
-const DEFAULT_R2_MANIFEST_URL = "https://dl.ylicen.top/latest.json"
-const R2_MANIFEST_URL = import.meta.env.VITE_R2_MANIFEST_URL ?? DEFAULT_R2_MANIFEST_URL
 const FALLBACK_DOWNLOAD_HOSTS = [
   "dl.ylicen.top",
   "pub-1745b19bd2c3417582bf63e8b26caab0.r2.dev",
@@ -19,21 +10,19 @@ const FALLBACK_DOWNLOAD_HOSTS = [
 
 const resolveDefaultHost = () => {
   try {
-    return new URL(R2_MANIFEST_URL).hostname
+    return new URL(manifestUrl).hostname
   } catch {
     return "dl.ylicen.top"
   }
 }
+
+const { manifest, loading, error, manifestUrl, normalizedVersion, loadManifest } = useReleaseManifest()
 
 const R2_DOWNLOAD_HOST = import.meta.env.VITE_R2_DOWNLOAD_HOST ?? resolveDefaultHost()
 
 const ALLOWED_DOWNLOAD_HOSTS = Array.from(
   new Set([R2_DOWNLOAD_HOST, ...FALLBACK_DOWNLOAD_HOSTS]),
 )
-
-const manifest = ref<UpdateManifest | null>(null)
-const loading = ref(true)
-const errorMessage = ref("")
 
 const isR2Link = (value?: string) => {
   if (!value) return false
@@ -64,27 +53,17 @@ const resolvePlatformLink = (platform: PlatformKey) => {
 }
 
 const windowsDownloadLink = computed(() => resolvePlatformLink("windows"))
-const releaseVersion = computed(() => manifest.value?.version ?? "")
 const hasWindowsDownload = computed(() => !!windowsDownloadLink.value)
+const sectionMessage = computed(() => {
+  if (error.value) return error.value
+  if (!loading.value && !hasWindowsDownload.value) {
+    return "R2 清单已读取，但当前仅支持 Windows 且安装包暂不可用。"
+  }
+  return ""
+})
 
 onMounted(async () => {
-  try {
-    const response = await fetch(R2_MANIFEST_URL, { cache: "no-store" })
-    if (!response.ok) {
-      throw new Error(`R2 manifest request failed: ${response.status}`)
-    }
-
-    const data = (await response.json()) as UpdateManifest
-    manifest.value = data
-
-    if (!hasWindowsDownload.value) {
-      errorMessage.value = "R2 清单已读取，但当前仅支持 Windows 且安装包暂不可用。"
-    }
-  } catch {
-    errorMessage.value = "当前无法读取 R2 下载清单，请稍后重试。"
-  } finally {
-    loading.value = false
-  }
+  await loadManifest()
 })
 </script>
 
@@ -99,13 +78,13 @@ onMounted(async () => {
         <p class="mt-4 text-base sm:text-lg text-zinc-700 leading-relaxed">
           仅提供 R2 下载源。发布流程会先从 GitHub 更新仓库获取最新安装包，再同步到 R2 对外分发。
         </p>
-        <p v-if="releaseVersion" class="mt-3 text-sm text-zinc-600">
-          当前发布版本：{{ releaseVersion }}
+        <p v-if="normalizedVersion" class="mt-3 text-sm text-zinc-600">
+          当前发布版本：{{ normalizedVersion }}
         </p>
       </div>
 
       <p v-if="loading" class="mt-10 text-center text-sm text-zinc-600">正在读取 R2 最新下载信息...</p>
-      <p v-else-if="errorMessage" class="mt-10 text-center text-sm text-zinc-600">{{ errorMessage }}</p>
+      <p v-else-if="sectionMessage" class="mt-10 text-center text-sm text-zinc-600">{{ sectionMessage }}</p>
 
       <div v-if="!loading" class="mt-10 max-w-xl mx-auto">
         <div class="rounded-2xl border border-zinc-200 bg-white px-6 py-8 text-center shadow-sm">

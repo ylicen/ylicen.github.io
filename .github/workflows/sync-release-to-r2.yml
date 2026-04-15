@@ -1,0 +1,143 @@
+name: Sync Latest Release To R2
+
+on:
+  workflow_dispatch:
+    inputs:
+      upstream_repo:
+        description: "Upstream GitHub repo that hosts release assets"
+        required: false
+        default: "ylicen/luminadb-updates"
+      r2_prefix:
+        description: "R2 object prefix for installer files"
+        required: false
+        default: "luminadb"
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      UPSTREAM_REPO: ${{ github.event.inputs.upstream_repo || 'ylicen/luminadb-updates' }}
+      R2_PREFIX: ${{ github.event.inputs.r2_prefix || 'luminadb' }}
+      R2_BUCKET: ${{ secrets.R2_BUCKET }}
+      R2_PUBLIC_BASE_URL: ${{ secrets.R2_PUBLIC_BASE_URL }}
+      R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: auto
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate required secrets
+        run: |
+          set -euo pipefail
+          for key in R2_BUCKET R2_PUBLIC_BASE_URL R2_ENDPOINT AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY; do
+            if [ -z "${!key:-}" ]; then
+              echo "Missing required secret/env: $key"
+              exit 1
+            fi
+          done
+
+      - name: Install tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+          python -m pip install --upgrade pip
+          pip install awscli
+
+      - name: Fetch latest release metadata
+        run: |
+          set -euo pipefail
+          api_url="https://api.github.com/repos/${UPSTREAM_REPO}/releases/latest"
+          curl -fsSL "$api_url" -o release.json
+          tag_name=$(jq -r '.tag_name // empty' release.json)
+          if [ -z "$tag_name" ]; then
+            echo "No latest release found in ${UPSTREAM_REPO}."
+            exit 1
+          fi
+          echo "TAG_NAME=$tag_name" >> "$GITHUB_ENV"
+          echo "RELEASE_DATE=$(date -u +%F)" >> "$GITHUB_ENV"
+
+      - name: Download release assets
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          asset_count=$(jq '.assets | length' release.json)
+          if [ "$asset_count" -eq 0 ]; then
+            echo "Latest release has no assets, nothing to sync."
+            exit 1
+          fi
+
+          jq -r '.assets[] | @base64' release.json | while read -r item; do
+            _jq() { echo "$item" | base64 --decode | jq -r "$1"; }
+            name=$(_jq '.name')
+            url=$(_jq '.browser_download_url')
+            echo "Downloading $name"
+            curl -fL "$url" -o "dist/$name"
+          done
+
+      - name: Upload assets to R2
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          : > out/uploads.jsonl
+          for file in dist/*; do
+            [ -f "$file" ] || continue
+            name=$(basename "$file")
+            key="${R2_PREFIX}/${name}"
+            aws s3 cp "$file" "s3://${R2_BUCKET}/${key}" --endpoint-url "$R2_ENDPOINT"
+            public_url="${R2_PUBLIC_BASE_URL%/}/${key}"
+            echo "{\"name\":\"$name\",\"url\":\"$public_url\"}" >> out/uploads.jsonl
+          done
+
+      - name: Build latest.json for R2
+        run: |
+          set -euo pipefail
+          windows_url=$(jq -r 'select(.name | test("(?i)(windows|win|setup|installer|exe|msi)")) | .url' out/uploads.jsonl | head -n 1)
+          macos_url=$(jq -r 'select(.name | test("(?i)(mac|darwin|dmg|pkg)")) | .url' out/uploads.jsonl | head -n 1)
+          linux_url=$(jq -r 'select(.name | test("(?i)(linux|appimage|deb|rpm|tar\\.gz|tar\\.xz)")) | .url' out/uploads.jsonl | head -n 1)
+
+          primary_download_url="$windows_url"
+          if [ -z "$primary_download_url" ]; then
+            primary_download_url="$macos_url"
+          fi
+          if [ -z "$primary_download_url" ]; then
+            primary_download_url="$linux_url"
+          fi
+
+          if [ -z "$primary_download_url" ]; then
+            echo "No downloadable asset URL found for latest.json"
+            exit 1
+          fi
+
+          jq -n \
+            --arg version "${TAG_NAME}" \
+            --arg dateLabel "${RELEASE_DATE}" \
+            --arg downloadUrl "${primary_download_url}" \
+            --arg windows "${windows_url}" \
+            --arg macos "${macos_url}" \
+            --arg linux "${linux_url}" \
+            '{
+              version: $version,
+              dateLabel: $dateLabel,
+              highlights: ["发布流程已同步到 R2 下载源"],
+              downloadUrl: $downloadUrl,
+              downloads: {
+                windows: $windows,
+                macos: $macos,
+                linux: $linux
+              }
+            }' > latest.json
+
+          cat latest.json
+
+      - name: Upload latest.json to R2
+        run: |
+          set -euo pipefail
+          aws s3 cp latest.json "s3://${R2_BUCKET}/latest.json" --content-type "application/json" --cache-control "no-store" --endpoint-url "$R2_ENDPOINT"
+          echo "Published: ${R2_PUBLIC_BASE_URL%/}/latest.json"
